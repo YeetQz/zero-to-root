@@ -1,163 +1,115 @@
 #!/usr/bin/env python3
-"""🤖 Redraws the live sections of README.md from progress.yml, logs/ and writeups/.
+"""🤖 The README bot. Redraws every live section of README.md and assets/status.svg.
 
-Run locally with:  python scripts/update_readme.py
+Run locally with:  python3 scripts/update_readme.py
 The GitHub Action runs it on every push and once a day.
+
+How it works: README.md contains marker pairs like <!--PROGRESS:START--> ... <!--PROGRESS:END-->.
+Everything between a pair gets replaced with freshly generated markdown.
 """
 from __future__ import annotations
 
-import datetime as dt
 import re
 import sys
 from pathlib import Path
 from urllib.parse import quote
 
-import yaml
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import status_svg  # noqa: E402
+import system  # noqa: E402
 
-ROOT = Path(__file__).resolve().parent.parent
-README = ROOT / "README.md"
-PROGRESS = ROOT / "progress.yml"
-LOGS = ROOT / "logs"
-WRITEUPS = ROOT / "writeups"
-
-STATUS_ICON = {"done": "✅", "next": "🔥", "later": "🔒"}
-LOG_NAME = re.compile(r"^(\d{4}-\d{2}-\d{2})\.md$")
-
-
-# ---------- data ----------
-
-def load_progress() -> dict:
-    data = yaml.safe_load(PROGRESS.read_text(encoding="utf-8")) or {}
-    for phase in data.get("phases", []):
-        for skill in phase.get("skills", []) or []:
-            status = str(skill.get("status", "later")).strip().lower()
-            skill["status"] = status if status in STATUS_ICON else "later"
-            skill["core"] = bool(skill.get("core", False))
-    return data
-
-
-def log_dates() -> list[dt.date]:
-    dates = []
-    if LOGS.is_dir():
-        for f in LOGS.iterdir():
-            m = LOG_NAME.match(f.name)
-            if m:
-                try:
-                    dates.append(dt.date.fromisoformat(m.group(1)))
-                except ValueError:
-                    pass
-    return sorted(dates)
-
-
-def streak(dates: list[dt.date], today: dt.date) -> int:
-    """Days in a row with a log, ending today or yesterday."""
-    if not dates:
-        return 0
-    have = set(dates)
-    day = today if today in have else today - dt.timedelta(days=1)
-    count = 0
-    while day in have:
-        count += 1
-        day -= dt.timedelta(days=1)
-    return count
-
-
-def count_boxes() -> int:
-    if not WRITEUPS.is_dir():
-        return 0
-    return sum(
-        1
-        for f in WRITEUPS.rglob("*.md")
-        if f.parent != WRITEUPS and not f.name.startswith("_") and f.name.lower() != "readme.md"
-    )
-
-
-def phase_state(phase: dict) -> str:
-    skills = phase.get("skills") or []
-    if skills and all(s["status"] == "done" for s in skills):
-        return "done"
-    if any(s["status"] in ("done", "next") for s in skills):
-        return "active"
-    return "locked"
-
-
-# ---------- rendering helpers ----------
-
-def bar(done: int, total: int, width: int) -> str:
-    if total <= 0:
-        return "░" * width
-    filled = round(done / total * width)
-    return "█" * filled + "░" * (width - filled)
+README = system.ROOT / "README.md"
 
 
 def shield(label: str, message: str, color: str, logo: str | None = None) -> str:
+    """A shields.io badge. Dashes and underscores are doubled because shields uses them as separators."""
     def esc(s: str) -> str:
         return quote(s.replace("-", "--").replace("_", "__"), safe="")
-
     url = f"https://img.shields.io/badge/{esc(label)}-{esc(message)}-{color}?style=for-the-badge"
     if logo:
         url += f"&logo={logo}&logoColor=white"
     return f'<img src="{url}" alt="{label}: {message}" />'
 
 
-def mermaid_text(s: str) -> str:
-    return s.replace('"', "'")
-
-
-# ---------- sections ----------
-
-def section_badges(data, stats) -> str:
-    phases = data.get("phases", [])
-    current = next((p for p in phases if phase_state(p) != "done"), None)
-    phase_label = f"{current.get('emoji', '')} {current['name']}".strip() if current else "👑 All done"
-    badges = [
+def section_badges(h) -> str:
+    return "\n".join([
         shield("Kali Linux", "2026.3", "367BF0", "kalilinux"),
-        shield("Day", str(stats["day"]), "6E40C9"),
-        shield("Skills", f"{stats['done']}/{stats['total']}", "2EA043"),
-        shield("Phase", phase_label, "D29922"),
-        shield("Boxes pwned", f"{stats['boxes']} 💀", "CF222E"),
-        shield("Streak", f"{stats['streak']} day{'s' if stats['streak'] != 1 else ''} 🔥", "FB8500"),
-        shield("Achievements", f"{stats['ach_done']}/{stats['ach_total']} 🏅", "8957E5"),
-    ]
-    return "\n".join(badges)
+        shield("Rank", f"{h.rank}-Rank {h.job}", "1F6BFF"),
+        shield("Level", str(h.level), "6E40C9"),
+        shield("XP", str(h.xp), "0EA5E9"),
+        shield("Boxes pwned", f"{h.boxes} 💀", "CF222E"),
+        shield("Streak", f"{h.streak} day{'s' if h.streak != 1 else ''} 🔥", "FB8500"),
+        shield("Day", str(h.day), "475569"),
+    ])
 
 
-def section_progress(data, stats) -> str:
-    pct = round(stats["done"] / stats["total"] * 100) if stats["total"] else 0
-    core_pct = round(stats["core_done"] / stats["core_total"] * 100) if stats["core_total"] else 0
+def section_hunter(h) -> str:
+    unlocked = sum(ok for _, ok in h.achievements)
+    bd = " · ".join(f"{k} {v}" for k, v in h.xp_breakdown.items() if v)
+    return "\n".join([
+        '<p align="center"><img src="assets/status.svg" alt="Animated hunter status window" width="100%" /></p>',
+        "",
+        f"> **[SYSTEM]** {h.name} is {'an' if h.rank in 'EAS' else 'a'} **{h.rank}-Rank {h.job}**. "
+        f"{h.xp_per_level - h.xp_into_level} XP until level {h.level + 1}.  ",
+        f"> XP sources: {bd} · {unlocked}/{len(h.achievements)} achievements",
+    ])
+
+
+def section_progress(h) -> str:
+    pct = round(h.skills_done / h.skills_total * 100) if h.skills_total else 0
+    core_pct = round(h.core_done / h.core_total * 100) if h.core_total else 0
     lines = [
         "```text",
-        f"Overall      {bar(stats['done'], stats['total'], 30)}  {pct:>3}%  ({stats['done']}/{stats['total']} skills)",
-        f"Must-knows ⭐ {bar(stats['core_done'], stats['core_total'], 30)}  {core_pct:>3}%  ({stats['core_done']}/{stats['core_total']})",
-        f"In progress  🔥 {stats['next']} skill{'s' if stats['next'] != 1 else ''}",
+        f"Overall      {system.bar(h.skills_done, h.skills_total, 30)}  {pct:>3}%  ({h.skills_done}/{h.skills_total} skills)",
+        f"Must-knows ⭐ {system.bar(h.core_done, h.core_total, 30)}  {core_pct:>3}%  ({h.core_done}/{h.core_total})",
+        f"In progress  🔥 {h.skills_next} skill{'s' if h.skills_next != 1 else ''}",
         "```",
         "",
-        "| | Phase | Progress | | Status |",
+        "| | Path | Progress | | Status |",
         "|---|---|---|---|---|",
     ]
     label = {"done": "✅ Complete", "active": "🔥 In progress", "locked": "🔒 Locked"}
-    for i, p in enumerate(data.get("phases", []), 1):
-        skills = p.get("skills") or []
-        d = sum(1 for s in skills if s["status"] == "done")
-        lines.append(
-            f"| {p.get('emoji', '')} | **{i}. {p['name']}** | `{bar(d, len(skills), 10)}` | {d}/{len(skills)} | {label[phase_state(p)]} |"
-        )
+    for i, p in enumerate(h.data.get("phases", []), 1):
+        d = sum(s["status"] == "done" for s in p["skills"])
+        n = len(p["skills"])
+        lines.append(f"| {p.get('emoji', '')} | **{i}. {p['name']}** | `{system.bar(d, n, 10)}` | {d}/{n} | {label[system.phase_state(p)]} |")
     return "\n".join(lines)
 
 
-def section_roadmap(data) -> str:
-    phases = data.get("phases", [])
-    out = ["```mermaid", "flowchart LR"]
+def section_quests(h) -> str:
+    quests = h.data.get("quests", []) or []
+    lines = ["| | Quest | Rank | Reward | Trial |", "|---|---|---|---|---|"]
+    for q in quests:
+        icon = system.QUEST_ICON[q["status"]]
+        title = f"**{q['title']}**" if q["status"] == "active" else (q["title"] if q["status"] == "done" else f"_{q['title']}_")
+        trial = f"`./hunter quiz {q['quiz']}`" if q.get("quiz") else ""
+        lines.append(f"| {icon} | {title} | {q.get('rank', 'E')} | +{q.get('reward', 0)} XP | {trial} |")
+    active = [q for q in quests if q["status"] == "active"]
+    for q in active:
+        lines += ["", "<details>", f"<summary>⚔️ <b>{q['title']}</b> objectives</summary>", ""]
+        lines += [f"- [ ] {o}" for o in q["objectives"]]
+        lines += ["", "</details>"]
+    return "\n".join(lines)
+
+
+def section_roadmap(h) -> str:
+    phases = h.data.get("phases", [])
+    out = ["```mermaid", "flowchart TD"]
     for p in phases:
-        skills = p.get("skills") or []
-        d = sum(1 for s in skills if s["status"] == "done")
-        text = mermaid_text(f"{p.get('emoji', '')} {p['name']}<br/>{d}/{len(skills)}")
-        out.append(f'    {p["id"]}["{text}"]:::{phase_state(p)}')
-    for a, b in zip(phases, phases[1:]):
-        out.append(f"    {a['id']} --> {b['id']}")
-    out += [
-        "    root((\"👑 root\")):::locked" if any(phase_state(p) != "done" for p in phases) else "    root((\"👑 root\")):::done",
-    ]
+        d = sum(s["status"] == "done" for s in p["skills"])
+        text = f"{p.get('emoji', '')} {p['name']}<br/>{d}/{len(p['skills'])}".replace('"', "'")
+        out.append(f'    {p["id"]}["{text}"]:::{system.phase_state(p)}')
+    ids = {p["id"] for p in phases}
+    # a branching tree: lab → linux → (bash, thm) → recon → web → (exploit, passwords) → practice → root
+    edges = [("lab", "linux"), ("linux", "bash"), ("linux", "thm"), ("bash", "recon"), ("thm", "recon"),
+             ("recon", "web"), ("web", "exploit"), ("web", "passwords"), ("exploit", "practice"),
+             ("passwords", "practice")]
+    used = [(a, b) for a, b in edges if a in ids and b in ids]
+    if not used:
+        used = list(zip([p["id"] for p in phases], [p["id"] for p in phases][1:]))
+    out += [f"    {a} --> {b}" for a, b in used]
+    all_done = all(system.phase_state(p) == "done" for p in phases)
+    out.append(f'    root(("👑 root")):::{"done" if all_done else "locked"}')
     if phases:
         out.append(f"    {phases[-1]['id']} --> root")
     out += [
@@ -173,62 +125,36 @@ def section_roadmap(data) -> str:
         "",
     ]
     for i, p in enumerate(phases, 1):
-        out.append(f"**{p.get('emoji', '')} {i}. {p['name']}**")
-        out.append("")
-        for s in p.get("skills") or []:
-            star = " ⭐" if s["core"] else ""
-            out.append(f"- {STATUS_ICON[s['status']]} {s['name']}{star}")
+        out += [f"**{p.get('emoji', '')} {i}. {p['name']}**", ""]
+        out += [f"- {system.SKILL_ICON[s['status']]} {s['name']}{' ⭐' if s['core'] else ''}" for s in p["skills"]]
         out.append("")
     out.append("</details>")
     return "\n".join(out)
 
 
-def achievements(data, stats) -> list[tuple[dict, bool]]:
-    done_skills = {s["name"] for p in data.get("phases", []) for s in (p.get("skills") or []) if s["status"] == "done"}
-    phase_done = {p["id"] for p in data.get("phases", []) if phase_state(p) == "done"}
-    result = []
-    for a in data.get("achievements", []) or []:
-        if "skill" in a:
-            ok = a["skill"] in done_skills
-        elif "phase" in a:
-            ok = a["phase"] in phase_done
-        elif "boxes" in a:
-            ok = stats["boxes"] >= int(a["boxes"])
-        elif "streak" in a:
-            ok = stats["best_streak"] >= int(a["streak"])
-        elif "logs" in a:
-            ok = stats["logs"] >= int(a["logs"])
-        else:
-            ok = False
-        result.append((a, ok))
-    return result
-
-
-def section_achievements(achs) -> str:
-    unlocked = [a for a, ok in achs if ok]
-    locked = [a for a, ok in achs if not ok]
-    lines = [f"**{len(unlocked)} of {len(achs)} unlocked**", "", "| | Achievement | |", "|---|---|---|"]
-    for a in unlocked:
-        lines.append(f"| {a.get('emoji', '🏅')} | **{a['name']}** | {a.get('desc', '')} |")
-    for a in locked:
-        lines.append(f"| 🔒 | {a['name']} | _{a.get('desc', '')}_ |")
+def section_achievements(h) -> str:
+    unlocked = [a for a, ok in h.achievements if ok]
+    locked = [a for a, ok in h.achievements if not ok]
+    lines = [f"**{len(unlocked)} of {len(h.achievements)} unlocked** · +{system.load().get('xp', {}).get('achievement', 50)} XP each",
+             "", "| | Achievement | |", "|---|---|---|"]
+    lines += [f"| {a.get('emoji', '🏅')} | **{a['name']}** | {a.get('desc', '')} |" for a in unlocked]
+    lines += [f"| 🔒 | {a['name']} | _{a.get('desc', '')}_ |" for a in locked]
     return "\n".join(lines)
 
 
-def section_latest_log(dates) -> str:
+def section_latest_log() -> str:
+    dates = system.log_dates()
     if not dates:
         return "_No logs yet. Copy `logs/_template.md` to `logs/YYYY-MM-DD.md` to start the diary._"
-    latest = dates[-1]
-    path = LOGS / f"{latest.isoformat()}.md"
+    path = system.LOGS / f"{dates[-1].isoformat()}.md"
     text = path.read_text(encoding="utf-8")
-    title_match = re.search(r"^#\s+(.+)$", text, re.M)
-    title = title_match.group(1).strip() if title_match else latest.isoformat()
+    m = re.search(r"^#\s+(.+)$", text, re.M)
+    title = m.group(1).strip() if m else dates[-1].isoformat()
     learned = re.search(r"^##[^\n]*learned[^\n]*\n(.*?)(?=^##\s|\Z)", text, re.M | re.S | re.I)
-    body = learned.group(1).strip() if learned else ""
-    body_lines = body.splitlines()[:10]
+    body = (learned.group(1).strip().splitlines() if learned else [])[:10]
     lines = [f"### [{title}](logs/{path.name})", ""]
-    if body_lines:
-        lines += ["**🧠 What I learned:**", ""] + body_lines
+    if body:
+        lines += ["**🧠 What I learned:**", ""] + body
     lines += ["", f"<sub>📚 {len(dates)} log entr{'y' if len(dates) == 1 else 'ies'} so far · [read them all](logs/)</sub>"]
     return "\n".join(lines)
 
@@ -241,52 +167,23 @@ def replace_section(readme: str, name: str, content: str) -> str:
     return pattern.sub(lambda m: f"{m.group(1)}\n{content}\n{m.group(3)}", readme)
 
 
-def best_streak(dates: list[dt.date]) -> int:
-    best = run = 0
-    prev = None
-    for d in dates:
-        run = run + 1 if prev and (d - prev).days == 1 else 1
-        best = max(best, run)
-        prev = d
-    return best
-
-
 def main() -> None:
-    data = load_progress()
-    today = dt.datetime.now(dt.timezone.utc).date()
-    skills = [s for p in data.get("phases", []) for s in (p.get("skills") or [])]
-    dates = log_dates()
-    started = data.get("started")
-    if isinstance(started, str):
-        started = dt.date.fromisoformat(started)
-    day = (today - started).days + 1 if isinstance(started, dt.date) else len(dates)
-
-    stats = {
-        "total": len(skills),
-        "done": sum(s["status"] == "done" for s in skills),
-        "next": sum(s["status"] == "next" for s in skills),
-        "core_total": sum(s["core"] for s in skills),
-        "core_done": sum(s["core"] and s["status"] == "done" for s in skills),
-        "boxes": count_boxes(),
-        "logs": len(dates),
-        "streak": streak(dates, today),
-        "best_streak": best_streak(dates),
-        "day": max(day, 1),
-    }
-    achs = achievements(data, stats)
-    stats["ach_done"] = sum(ok for _, ok in achs)
-    stats["ach_total"] = len(achs)
-
+    h = system.compute()
+    status_svg.write(h)
     readme = README.read_text(encoding="utf-8")
-    readme = replace_section(readme, "BADGES", section_badges(data, stats))
-    readme = replace_section(readme, "PROGRESS", section_progress(data, stats))
-    readme = replace_section(readme, "ROADMAP", section_roadmap(data))
-    readme = replace_section(readme, "ACHIEVEMENTS", section_achievements(achs))
-    readme = replace_section(readme, "LATEST_LOG", section_latest_log(dates))
+    for name, content in [
+        ("BADGES", section_badges(h)),
+        ("HUNTER", section_hunter(h)),
+        ("PROGRESS", section_progress(h)),
+        ("QUESTS", section_quests(h)),
+        ("ROADMAP", section_roadmap(h)),
+        ("ACHIEVEMENTS", section_achievements(h)),
+        ("LATEST_LOG", section_latest_log()),
+    ]:
+        readme = replace_section(readme, name, content)
     README.write_text(readme, encoding="utf-8")
-
-    print(f"✅ README updated: {stats['done']}/{stats['total']} skills, {stats['ach_done']} achievements, "
-          f"{stats['boxes']} boxes, streak {stats['streak']}")
+    print(f"✅ README updated: level {h.level} {h.rank}-rank, {h.xp} XP, "
+          f"{h.skills_done}/{h.skills_total} skills, {sum(ok for _, ok in h.achievements)} achievements")
 
 
 if __name__ == "__main__":

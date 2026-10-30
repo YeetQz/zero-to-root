@@ -1,0 +1,74 @@
+title: Linux Trial
+emoji: "🐧"
+rank: E
+pass: 80
+questions:
+  - q: "What does 'pwd' do?"
+    options: ["Changes your password", "Prints the folder you are in", "Lists files", "Shows running programs"]
+    answer: b
+    explain: "pwd = print working directory. 'passwd' is the one that changes passwords."
+
+  - q: "Why does 'ls -la' show more files than 'ls'?"
+    options:
+      - It includes hidden files whose names start with a dot
+      - It includes deleted files
+      - It searches every folder
+      - It shows files from other users only
+    answer: a
+    explain: "-a = all, including dotfiles like .bashrc. -l = long format with permissions, owner and size."
+
+  - q: "A file shows '-rwxr-x---'. What can the GROUP do?"
+    options: ["Read, write and execute", "Read and execute", "Nothing", "Only write"]
+    answer: b
+    explain: "Read it in threes after the first character: owner rwx, group r-x, everyone else ---."
+
+  - q: "What does 'sudo' do?"
+    options:
+      - Deletes a file safely
+      - Runs a command as root (or another user)
+      - Shuts the computer down
+      - Updates Kali
+    answer: b
+    explain: "sudo = 'superuser do'. 'sudo -l' shows what you are allowed to run, which matters a lot in privilege escalation."
+
+  - q: "What does the pipe '|' do in 'history | grep nmap'?"
+    options:
+      - Runs both commands at the same time on different files
+      - Sends the output of history into grep as its input
+      - Saves history to a file called grep
+      - Comments out the rest of the line
+    answer: b
+    explain: "Pipes chain small tools together. That's the core idea of the Linux command line."
+
+  - q: "What's the difference between '>' and '>>'?"
+    options:
+      - No difference
+      - "'>' overwrites the file, '>>' adds to the end"
+      - "'>' appends, '>>' overwrites"
+      - "'>>' is for folders"
+    answer: b
+    explain: "Be careful with '>': it wipes the file first."
+
+  - q: "Which command makes script.sh runnable?"
+    options: ["run script.sh", "chmod +x script.sh", "sudo script.sh", "exec script"]
+    answer: b
+    explain: "chmod +x adds the execute permission. Then run it with ./script.sh"
+
+  - q: "What lives in /etc?"
+    options: ["User photos", "System configuration files", "Temporary files", "Installed games"]
+    answer: b
+    explain: "For example /etc/passwd (user accounts) and /etc/hosts. /tmp is temporary files, /home holds users' files."
+
+  - q: "Which command shows which ports YOUR machine is listening on?"
+    options: ["ss -tulpn", "ping localhost", "ls /ports", "whoami"]
+    answer: a
+    explain: "It's the inside view of what nmap sees from outside. t=TCP, u=UDP, l=listening, p=process, n=numbers."
+
+  - q: "'grep -ri password .' does what?"
+    options:
+      - Changes every password
+      - Searches all files under the current folder for 'password', ignoring case
+      - Deletes files named password
+      - Lists users
+    answer: b
+    explain: "-r = recursive (into subfolders), -i = ignore case, . = start here."

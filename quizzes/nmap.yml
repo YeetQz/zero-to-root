@@ -1,0 +1,82 @@
+title: nmap Trial
+emoji: "📡"
+rank: E
+pass: 80
+questions:
+  - q: "nmap says a port is 'open'. What does that mean?"
+    options:
+      - The port has a known vulnerability
+      - A program is listening and accepting connections on it
+      - A firewall blocked the probe
+      - The host is turned off
+    answer: b
+    explain: "Open just means something is listening. It says nothing about whether that program is vulnerable."
+
+  - q: "A port shows as 'filtered'. What most likely happened?"
+    options:
+      - Nothing is listening there
+      - The port is open but slow
+      - A firewall dropped the probe, so nmap can't tell what's there
+      - nmap crashed
+    answer: c
+    explain: "Closed means the host answered 'nothing here'. Filtered means no useful answer came back, usually because a firewall dropped it."
+
+  - q: "Which flag makes nmap identify the exact software and version?"
+    options: ["-sS", "-sV", "-sn", "-oN"]
+    answer: b
+    explain: "-sV = service/Version detection. It connects and reads banners, which is how you found OpenSSH 10.4p1."
+
+  - q: "Without -sV, where does the SERVICE column come from?"
+    options:
+      - It is a guess based on the port number
+      - nmap logs in to the service
+      - The target tells nmap its name
+      - It is random
+    answer: a
+    explain: "Port 22 is usually SSH, so nmap writes 'ssh'. Only -sV actually checks."
+
+  - q: "Why is a SYN scan (-sS) called a 'half-open' or 'stealth' scan?"
+    options:
+      - It only scans half the ports
+      - It hides your IP address
+      - It sends SYN, reads the reply, and never finishes the TCP handshake
+      - It runs at half speed
+    answer: c
+    explain: "A full connection is SYN, SYN-ACK, ACK. A SYN scan stops after reading the SYN-ACK, so no full connection is made. It does not hide who you are."
+
+  - q: "How many ports does a plain 'nmap target' scan check by default?"
+    options: ["All 65,535", "The 100 most common", "The 1,000 most common TCP ports", "Only port 80"]
+    answer: c
+    explain: "That's why your first scan said 'All 1000 scanned ports'. Use -p- for all 65,535."
+
+  - q: "Which option scans every TCP port?"
+    options: ["-p 1000", "-p-", "-A", "-T5"]
+    answer: b
+    explain: "-p- means ports 1 to 65535. Services sometimes hide on high ports."
+
+  - q: "Your -A scan of scanme.nmap.org said 'VirtualBox Slirp NAT', 1 hop, 0.35 ms. Why?"
+    options:
+      - scanme.nmap.org runs inside VirtualBox
+      - VirtualBox NAT relays your connections, so nmap fingerprinted the relay, not the server
+      - nmap is broken
+      - Your Windows firewall answered
+    answer: b
+    explain: "Behind NAT, VirtualBox makes the connections for the VM. Always sanity-check results: 0.35 ms to a server across the internet is impossible."
+
+  - q: "Which of these is OK to scan for practice?"
+    options:
+      - Your school's network, just to look
+      - A random website you found
+      - scanme.nmap.org or your own home lab
+      - Your neighbour's Wi-Fi router
+    answer: c
+    explain: "Only scan what you own or have permission for. scanme.nmap.org is provided by the Nmap project for practice."
+
+  - q: "What does -oN scan1.txt do?"
+    options:
+      - Scans only the hosts listed in scan1.txt
+      - Saves the normal output to scan1.txt
+      - Opens a network called scan1
+      - Disables output
+    answer: b
+    explain: "-o = output, N = normal format. -oA saves every format at once. (-iL is the one that reads targets from a file.)"

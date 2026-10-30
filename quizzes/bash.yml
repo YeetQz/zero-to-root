@@ -1,0 +1,78 @@
+title: Bash Trial
+emoji: "🐚"
+rank: D
+pass: 80
+questions:
+  - q: "What does the first line '#!/bin/bash' in a script do?"
+    options:
+      - It's a comment and does nothing
+      - Tells the system to run the script with bash
+      - Makes the script run as root
+      - Imports a library
+    answer: b
+    explain: "It's called a shebang. Without it, the system may run the script with a different shell."
+
+  - q: "Which line correctly sets a variable?"
+    options: ['name = "kali"', 'name="kali"', '$name="kali"', 'set name kali']
+    answer: b
+    explain: "No spaces around = in bash. 'name = kali' tries to run a command called 'name'."
+
+  - q: "How do you print the variable 'name'?"
+    options: ['echo name', 'echo "$name"', 'print(name)', 'echo {name}']
+    answer: b
+    explain: "The $ reads the value. Quotes keep spaces safe."
+
+  - q: "Inside a script, what is '$1'?"
+    options: ["The first line", "The first argument you passed to the script", "The exit code", "Always the number 1"]
+    answer: b
+    explain: "./scan.sh 192.168.56.101 → $1 is 192.168.56.101. $# is how many arguments there are."
+
+  - q: "What does 'read target' do?"
+    options:
+      - Reads a file called target
+      - Waits for you to type something and stores it in the variable target
+      - Scans a target
+      - Prints 'target'
+    answer: b
+    explain: "Add -p for a prompt: read -p 'Target IP: ' target"
+
+  - q: "Which is a valid bash for loop?"
+    options:
+      - "for i in 1 2 3; do echo $i; done"
+      - "for (i in 1..3) { echo i }"
+      - "loop i 1 3"
+      - "foreach i 1 2 3 echo"
+    answer: a
+    explain: "for … in …; do …; done. You can also loop over files: for f in *.txt; do …; done"
+
+  - q: "What does 'if [ -f notes.txt ]' check?"
+    options:
+      - That notes.txt exists and is a regular file
+      - That notes.txt is empty
+      - That notes.txt is a folder
+      - That notes.txt is executable
+    answer: a
+    explain: "-d checks for a folder, -x for executable, -z for an empty string."
+
+  - q: "What is '$?' right after a command?"
+    options:
+      - The command's exit code, where 0 means success
+      - A random number
+      - The number of arguments
+      - The script's name
+    answer: a
+    explain: "Non-zero means something went wrong. Scripts use it to decide what to do next."
+
+  - q: "What does 'cut -d: -f1 /etc/passwd' print?"
+    options: ["Every password", "The first field of each line: the usernames", "The first line only", "Nothing"]
+    answer: b
+    explain: "-d: splits each line on ':' and -f1 keeps field 1. Modern Linux keeps password hashes in /etc/shadow, not /etc/passwd."
+
+  - q: "What does $(whoami) do inside a command?"
+    options:
+      - Prints the text '$(whoami)'
+      - Runs whoami and puts its output there
+      - Makes you root
+      - Comments it out
+    answer: b
+    explain: "Command substitution. Example: echo \"Logged in as $(whoami)\""

@@ -2,61 +2,111 @@
 
 # 🐉 zero-to-root
 
-<a href="#-skill-tree"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1200&color=367BF0&center=true&vCenter=true&width=620&lines=mykali%40kali%3A~%24+whoami;%3E+future+pentester+%F0%9F%90%89;mykali%40kali%3A~%24+nmap+-sV+my-future;%3E+22%2Ftcp+open++curiosity;%3E+80%2Ftcp+open++persistence;mykali%40kali%3A~%24+sudo+become+--root" alt="Typing terminal animation" /></a>
+<a href="#-how-to-play"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1200&color=3AD9FF&center=true&vCenter=true&width=680&lines=%5BSYSTEM%5D+You+have+been+chosen+as+a+Player.;%5BSYSTEM%5D+Daily+quest+has+arrived.;mykali%40kali%3A~%24+.%2Fhunter+status;%5BSYSTEM%5D+Level+up!;mykali%40kali%3A~%24+sudo+become+--root" alt="Typing terminal animation" /></a>
 
-**My journey from zero to root: learning ethical hacking with Kali Linux, one skill at a time.**
+**My journey from zero to root: learning ethical hacking with Kali Linux, levelling up like a hunter, one skill at a time.**
 
 <!--BADGES:START-->
 <img src="https://img.shields.io/badge/Kali%20Linux-2026.3-367BF0?style=for-the-badge&logo=kalilinux&logoColor=white" alt="Kali Linux: 2026.3" />
-<img src="https://img.shields.io/badge/Day-1-6E40C9?style=for-the-badge" alt="Day: 1" />
-<img src="https://img.shields.io/badge/Skills-6%2F23-2EA043?style=for-the-badge" alt="Skills: 6/23" />
-<img src="https://img.shields.io/badge/Phase-%F0%9F%A7%AA%20Set%20up%20your%20lab-D29922?style=for-the-badge" alt="Phase: 🧪 Set up your lab" />
+<img src="https://img.shields.io/badge/Rank-E--Rank%20Novice%20Hunter-1F6BFF?style=for-the-badge" alt="Rank: E-Rank Novice Hunter" />
+<img src="https://img.shields.io/badge/Level-4-6E40C9?style=for-the-badge" alt="Level: 4" />
+<img src="https://img.shields.io/badge/XP-1320-0EA5E9?style=for-the-badge" alt="XP: 1320" />
 <img src="https://img.shields.io/badge/Boxes%20pwned-0%20%F0%9F%92%80-CF222E?style=for-the-badge" alt="Boxes pwned: 0 💀" />
 <img src="https://img.shields.io/badge/Streak-1%20day%20%F0%9F%94%A5-FB8500?style=for-the-badge" alt="Streak: 1 day 🔥" />
-<img src="https://img.shields.io/badge/Achievements-6%2F12%20%F0%9F%8F%85-8957E5?style=for-the-badge" alt="Achievements: 6/12 🏅" />
+<img src="https://img.shields.io/badge/Day-1-475569?style=for-the-badge" alt="Day: 1" />
 <!--BADGES:END-->
 
 </div>
 
 ---
 
+## 🪪 Hunter status
+
+<!--HUNTER:START-->
+<p align="center"><img src="assets/status.svg" alt="Animated hunter status window" width="100%" /></p>
+
+> **[SYSTEM]** mykali is an **E-Rank Novice Hunter**. 180 XP until level 5.  
+> XP sources: Skills 800 · Quests 200 · Logs 20 · Achievements 300 · 6/17 achievements
+<!--HUNTER:END-->
+
+## ⚔️ Quests
+
+<!--QUESTS:START-->
+| | Quest | Rank | Reward | Trial |
+|---|---|---|---|---|
+| ✅ | The Awakening | E | +200 XP |  |
+| ⚔️ | **First Scan** | E | +200 XP | `./hunter quiz nmap` |
+| ⚔️ | **Shell Initiate** | E | +300 XP | `./hunter quiz linux` |
+| 🔒 | _Packet Whisperer_ | D | +300 XP | `./hunter quiz networking` |
+| 🔒 | _Scriptsmith_ | D | +300 XP | `./hunter quiz bash` |
+| 🔒 | _Dungeon Gate: Home Lab_ | D | +400 XP |  |
+| 🔒 | _Enter the Tower_ | D | +300 XP |  |
+
+<details>
+<summary>⚔️ <b>First Scan</b> objectives</summary>
+
+- [ ] Scan your own machine with nmap
+- [ ] Watch port 22 flip from closed to open
+- [ ] Run -A against scanme.nmap.org and save the result
+- [ ] Pass the nmap quiz (80%+)
+
+</details>
+
+<details>
+<summary>⚔️ <b>Shell Initiate</b> objectives</summary>
+
+- [ ] Clear OverTheWire Bandit levels 0 to 5
+- [ ] Add 5 new commands to cheatsheets/linux.md
+- [ ] Pass the linux quiz (80%+)
+
+</details>
+<!--QUESTS:END-->
+
 ## ⚡ Progress
 
 <!--PROGRESS:START-->
 ```text
-Overall      ████████░░░░░░░░░░░░░░░░░░░░░░   26%  (6/23 skills)
-Must-knows ⭐ █████████░░░░░░░░░░░░░░░░░░░░░   29%  (4/14)
+Overall      ████░░░░░░░░░░░░░░░░░░░░░░░░░░   15%  (6/40 skills)
+Must-knows ⭐ █████░░░░░░░░░░░░░░░░░░░░░░░░░   17%  (4/24)
 In progress  🔥 4 skills
 ```
 
-| | Phase | Progress | | Status |
+| | Path | Progress | | Status |
 |---|---|---|---|---|
 | 🧪 | **1. Set up your lab** | `█████░░░░░` | 2/4 | 🔥 In progress |
-| 🐧 | **2. Linux & networking basics** | `░░░░░░░░░░` | 0/3 | 🔥 In progress |
-| 🔍 | **3. Recon & scanning** | `████████░░` | 4/5 | 🔥 In progress |
-| 🌐 | **4. Web hacking** | `░░░░░░░░░░` | 0/4 | 🔒 Locked |
-| 💥 | **5. Exploitation** | `░░░░░░░░░░` | 0/2 | 🔒 Locked |
-| 🔑 | **6. Passwords & hashes** | `░░░░░░░░░░` | 0/2 | 🔒 Locked |
-| 🏆 | **7. Practice & level up** | `░░░░░░░░░░` | 0/3 | 🔒 Locked |
+| 🐧 | **2. Linux & networking basics** | `░░░░░░░░░░` | 0/6 | 🔥 In progress |
+| 🐚 | **3. Bash scripting** | `░░░░░░░░░░` | 0/6 | 🔒 Locked |
+| 🎮 | **4. TryHackMe quest line** | `░░░░░░░░░░` | 0/8 | 🔒 Locked |
+| 🔍 | **5. Recon & scanning** | `████████░░` | 4/5 | 🔥 In progress |
+| 🌐 | **6. Web hacking** | `░░░░░░░░░░` | 0/5 | 🔒 Locked |
+| 💥 | **7. Exploitation** | `░░░░░░░░░░` | 0/2 | 🔒 Locked |
+| 🔑 | **8. Passwords & hashes** | `░░░░░░░░░░` | 0/2 | 🔒 Locked |
+| 🏆 | **9. Practice & level up** | `░░░░░░░░░░` | 0/2 | 🔒 Locked |
 <!--PROGRESS:END-->
 
 ## 🌳 Skill tree
 
 <!--ROADMAP:START-->
 ```mermaid
-flowchart LR
+flowchart TD
     lab["🧪 Set up your lab<br/>2/4"]:::active
-    linux["🐧 Linux & networking basics<br/>0/3"]:::active
+    linux["🐧 Linux & networking basics<br/>0/6"]:::active
+    bash["🐚 Bash scripting<br/>0/6"]:::locked
+    thm["🎮 TryHackMe quest line<br/>0/8"]:::locked
     recon["🔍 Recon & scanning<br/>4/5"]:::active
-    web["🌐 Web hacking<br/>0/4"]:::locked
+    web["🌐 Web hacking<br/>0/5"]:::locked
     exploit["💥 Exploitation<br/>0/2"]:::locked
     passwords["🔑 Passwords & hashes<br/>0/2"]:::locked
-    practice["🏆 Practice & level up<br/>0/3"]:::locked
+    practice["🏆 Practice & level up<br/>0/2"]:::locked
     lab --> linux
-    linux --> recon
+    linux --> bash
+    linux --> thm
+    bash --> recon
+    thm --> recon
     recon --> web
     web --> exploit
-    exploit --> passwords
+    web --> passwords
+    exploit --> practice
     passwords --> practice
     root(("👑 root")):::locked
     practice --> root
@@ -80,10 +130,33 @@ flowchart LR
 **🐧 2. Linux & networking basics**
 
 - 🔥 Linux command line (OverTheWire Bandit) ⭐
+- 🔒 Files, folders and permissions ⭐
+- 🔒 Users, sudo and root ⭐
+- 🔒 Processes, services and packages
 - 🔒 How networks work (IP, TCP/UDP, ports, DNS) ⭐
 - 🔒 Wireshark - watch real packets
 
-**🔍 3. Recon & scanning**
+**🐚 3. Bash scripting**
+
+- 🔒 Variables, echo and read ⭐
+- 🔒 If/else and tests ⭐
+- 🔒 Loops (for and while) ⭐
+- 🔒 Functions and script arguments
+- 🔒 Text tools (grep, cut, sort, awk) ⭐
+- 🔒 Build your own lab helper script
+
+**🎮 4. TryHackMe quest line**
+
+- 🔒 THM: Tutorial + connect with OpenVPN ⭐
+- 🔒 THM: Linux Fundamentals 1, 2 and 3 ⭐
+- 🔒 THM: Pre Security path ⭐
+- 🔒 THM: Nmap room
+- 🔒 THM: Bash Scripting room
+- 🔒 THM: Burp Suite basics
+- 🔒 THM: OWASP Top 10
+- 🔒 TryHackMe Jr Penetration Tester path ⭐
+
+**🔍 5. Recon & scanning**
 
 - ✅ Scan your own machine ⭐
 - ✅ Open vs closed vs filtered ⭐
@@ -91,26 +164,26 @@ flowchart LR
 - ✅ Aggressive scan (-A) and saving results
 - 🔥 All ports, UDP and NSE scripts ⭐
 
-**🌐 4. Web hacking**
+**🌐 6. Web hacking**
 
+- 🔒 How websites work (HTTP, cookies, sessions) ⭐
 - 🔒 Burp Suite - intercept web requests ⭐
 - 🔒 Find hidden pages with gobuster / ffuf
 - 🔒 SQL injection (by hand, then sqlmap) ⭐
 - 🔒 Cross-site scripting (XSS)
 
-**💥 5. Exploitation**
+**💥 7. Exploitation**
 
 - 🔒 Metasploit basics ⭐
 - 🔒 Linux privilege escalation
 
-**🔑 6. Passwords & hashes**
+**🔑 8. Passwords & hashes**
 
 - 🔒 How password hashes work ⭐
 - 🔒 Crack hashes with John and Hashcat
 
-**🏆 7. Practice & level up**
+**🏆 9. Practice & level up**
 
-- 🔒 TryHackMe Jr Penetration Tester path ⭐
 - 🔒 Hack The Box Starting Point
 - 🔒 Write notes for every box you finish
 
@@ -120,7 +193,7 @@ flowchart LR
 ## 🏅 Achievements
 
 <!--ACHIEVEMENTS:START-->
-**6 of 12 unlocked**
+**6 of 17 unlocked** · +50 XP each
 
 | | Achievement | |
 |---|---|---|
@@ -130,11 +203,16 @@ flowchart LR
 | 🚪 | **Open Port Hunter** | Watched a port flip from closed to open |
 | 🕵️ | **Version Detective** | Identified exact software with -sV |
 | 📓 | **Dear Diary** | Wrote a first hacker log |
+| 🔒 | Rank Up | _Reached D-rank (level 5)_ |
+| 🔒 | Quiz Slayer | _Cleared a quest by passing its quiz_ |
 | 🔒 | Lab Rat | _Finished the whole lab phase_ |
 | 🔒 | Terminal Wizard | _Finished Linux & networking basics_ |
+| 🔒 | Scriptsmith | _Finished the Bash scripting path_ |
+| 🔒 | Tower Climber | _Finished the TryHackMe quest line_ |
 | 🔒 | On Fire | _Logged 7 days in a row_ |
 | 🔒 | First Blood | _Wrote up a first hacked box_ |
 | 🔒 | Web Slinger | _Finished the web hacking phase_ |
+| 🔒 | C-Rank Hunter | _Reached level 10_ |
 | 🔒 | Root Collector | _Wrote up 10 boxes_ |
 <!--ACHIEVEMENTS:END-->
 
@@ -156,26 +234,64 @@ flowchart LR
 
 ---
 
+## 🎮 How to play
+
+On Kali, clone this repo once, then talk to the System from your terminal:
+
+```bash
+git clone https://github.com/YeetQz/zero-to-root.git ~/zero-to-root
+cd ~/zero-to-root
+./hunter                       # 🪪 your status window
+./hunter quest                 # ⚔️ quests + today's daily quest
+./hunter quiz nmap             # 🧠 take a trial (nmap, linux, networking, bash)
+./hunter done "update kali"    # ✅ mark a skill learned, gain XP, maybe level up
+./hunter skills                # 🌳 every path and skill
+./hunter codex port            # 📖 explain a word you don't know
+./hunter levelup               # 🎉 replay the level-up animation
+```
+
+After you level up, save your game:
+
+```bash
+git add -A && git commit -m "⚔️ Level up" && git push
+```
+
+<details>
+<summary>⚙️ Make the status window greet you every time you open a terminal</summary>
+
+```bash
+echo 'cd ~/zero-to-root && ./hunter --fast; cd ~' >> ~/.zshrc
+```
+
+Kali's default shell is zsh. Remove that line from `~/.zshrc` to turn it off.
+</details>
+
+### ⚡ How XP works
+
+| You do this | You get |
+|---|---|
+| ✅ Learn a skill | +100 XP (⭐ must-know: +150) |
+| ⚔️ Clear a quest | its reward (+200 to +400) |
+| 📓 Write a daily log | +20 XP |
+| 💀 Write up a hacked box | +300 XP |
+| 🏅 Unlock an achievement | +50 XP |
+
+Every **375 XP** is a level. Ranks: **E** (1) → **D** (5) → **C** (10) → **B** (15) → **A** (20) → **S** (30).
+Your stats grow with the paths that train them: 🗡️ STR exploitation & passwords · 🏃 AGI web · 👁️ SEN recon · ❤️ VIT lab & practice · 🧠 INT Linux & Bash.
+
 ## 🗺️ What's in here
 
 | Folder | What it is |
 |---|---|
-| 📓 [`logs/`](logs/) | A daily hacker diary: what I tried, what broke, what I learned |
-| 📝 [`writeups/`](writeups/) | One write-up per box I hack (TryHackMe, Hack The Box) |
-| 📚 [`cheatsheets/`](cheatsheets/) | Commands I actually use, explained in my own words |
-| 🧪 [`lab/`](lab/) | How my home lab is built, and how I fixed it when it broke |
-| ⚙️ [`progress.yml`](progress.yml) | My skill checklist. Editing it updates this whole page |
-
-## 🤖 How this README stays alive
-
-This page rewrites itself. A GitHub Action runs every time I push (and once a day) and:
-
-1. reads `progress.yml` and redraws the **progress bar**, **skill tree** and **badges**
-2. counts write-ups in `writeups/` for the 💀 **boxes pwned** badge
-3. checks `logs/` for my 🔥 **streak** and copies in the **latest log**
-4. unlocks 🏅 **achievements** when I hit a milestone
-
-To update: change a skill to `status: done`, add a log or a write-up, then push.
+| ⚙️ [`progress.yml`](progress.yml) | **Your save file.** Skills, quests, XP rules, ranks, achievements |
+| 🐍 [`hunter`](hunter) | The System in your terminal |
+| 🧠 [`quizzes/`](quizzes/) | Trials for each path + 📖 [the Codex](quizzes/codex.yml) (36 words explained) |
+| 📓 [`logs/`](logs/) | Daily hacker diary |
+| 📝 [`writeups/`](writeups/) | One write-up per box I hack |
+| 📚 [`cheatsheets/`](cheatsheets/) | Commands I actually use, in my own words |
+| 🧪 [`lab/`](lab/) | How my home lab is built, and how I fixed it |
+| 📘 [`docs/how-it-works.md`](docs/how-it-works.md) | How every piece of this repo works, line by line |
+| 🤖 [`scripts/`](scripts/) | The README bot and the System's brain |
 
 ## ⚖️ Rules I hack by
 

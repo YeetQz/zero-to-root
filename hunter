@@ -1,0 +1,464 @@
+#!/usr/bin/env python3
+"""
+ ██╗  ██╗██╗   ██╗███╗   ██╗████████╗███████╗██████╗
+ ██║  ██║██║   ██║████╗  ██║╚══██╔══╝██╔════╝██╔══██╗
+ ███████║██║   ██║██╔██╗ ██║   ██║   █████╗  ██████╔╝
+ ██╔══██║██║   ██║██║╚██╗██║   ██║   ██╔══╝  ██╔══██╗
+ ██║  ██║╚██████╔╝██║ ╚████║   ██║   ███████╗██║  ██║
+ ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
+
+The SYSTEM, in your terminal. Reads progress.yml and shows your hunter status.
+
+  ./hunter                 status window (default)
+  ./hunter skills          every path and skill
+  ./hunter quest           your quests + today's daily quest
+  ./hunter quiz [topic]    take a trial (nmap, linux, networking, bash)
+  ./hunter done "<skill>"  mark a skill done and gain XP
+  ./hunter codex [word]    look up a word you don't understand
+  ./hunter levelup         replay the level-up animation
+  ./hunter --fast ...      skip animations
+
+It only reads and edits files inside this repo. It never touches the network.
+"""
+from __future__ import annotations
+
+import datetime as dt
+import os
+import random
+import re
+import sys
+import time
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent
+sys.path.insert(0, str(ROOT / "scripts"))
+
+try:
+    import yaml  # noqa: F401  (system.py needs it)
+except ImportError:
+    print("PyYAML is missing. On Kali run:  sudo apt install python3-yaml")
+    sys.exit(1)
+
+import system  # our shared brain: scripts/system.py
+
+# ───────────────────────── look & feel ─────────────────────────
+# ANSI escape codes: \033[...m changes colour/style in the terminal.
+TTY = sys.stdout.isatty() and os.environ.get("NO_COLOR") is None
+FAST = "--fast" in sys.argv or not TTY
+
+
+def c(code: str, text: str) -> str:
+    return f"\033[{code}m{text}\033[0m" if TTY else text
+
+
+BLUE = lambda t: c("38;5;39", t)      # noqa: E731  System blue
+CYAN = lambda t: c("38;5;51", t)      # noqa: E731
+DIM = lambda t: c("2", t)             # noqa: E731
+BOLD = lambda t: c("1", t)            # noqa: E731
+GREEN = lambda t: c("38;5;48", t)     # noqa: E731
+GOLD = lambda t: c("38;5;220", t)     # noqa: E731
+RED = lambda t: c("38;5;203", t)      # noqa: E731
+PURPLE = lambda t: c("38;5;141", t)   # noqa: E731
+
+RANK_COLOR = {"E": DIM, "D": GREEN, "C": CYAN, "B": BLUE, "A": PURPLE, "S": GOLD}
+ANSI = re.compile(r"\033\[[0-9;]*m")
+W = 60  # inner width of the status window
+
+
+def sleep(s: float) -> None:
+    if not FAST:
+        time.sleep(s)
+
+
+def type_out(text: str, delay: float = 0.012, end: str = "\n") -> None:
+    """Typewriter effect: print one character at a time."""
+    if FAST:
+        print(text, end=end)
+        return
+    i = 0
+    while i < len(text):
+        m = ANSI.match(text, i)          # print colour codes instantly
+        if m:
+            sys.stdout.write(m.group(0))
+            i = m.end()
+            continue
+        sys.stdout.write(text[i])
+        sys.stdout.flush()
+        time.sleep(delay)
+        i += 1
+    sys.stdout.write(end)
+
+
+def visible_len(s: str) -> int:
+    return len(ANSI.sub("", s))
+
+
+def pad(text: str, width: int) -> str:
+    """Pad coloured text to a visible width (colour codes take no space on screen)."""
+    return text + " " * max(width - visible_len(text), 0)
+
+
+def row(content: str = "") -> str:
+    """One line inside the window, padded so the right border lines up."""
+    pad = W - visible_len(content)
+    return BLUE("║ ") + content + " " * max(pad, 0) + BLUE(" ║")
+
+
+def top(title: str = "") -> str:
+    if not title:
+        return BLUE("╔" + "═" * (W + 2) + "╗")
+    t = f" {title} "
+    left = (W + 2 - len(t)) // 2
+    return BLUE("╔" + "═" * left) + BOLD(CYAN(t)) + BLUE("═" * (W + 2 - left - len(t)) + "╗")
+
+
+def mid() -> str:
+    return BLUE("╟" + "─" * (W + 2) + "╢")
+
+
+def bottom() -> str:
+    return BLUE("╚" + "═" * (W + 2) + "╝")
+
+
+def system_msg(text: str) -> None:
+    type_out(BLUE("[SYSTEM] ") + text, 0.018)
+
+
+# ───────────────────────── commands ─────────────────────────
+
+def cmd_status() -> None:
+    h = system.compute()
+    rc = RANK_COLOR.get(h.rank, BOLD)
+
+    if not FAST:
+        print()
+        system_msg("Synchronizing with the player...")
+        sleep(0.3)
+        system_msg(f"Player detected: {BOLD(h.name)}")
+        sleep(0.3)
+        print()
+
+    lines = [
+        top("S T A T U S"),
+        row(),
+        row(f"{DIM('NAME')}   {pad(BOLD(h.name), 30)}{DIM('LEVEL')}  {BOLD(GOLD(str(h.level)))}"),
+        row(f"{DIM('JOB')}    {pad(h.job, 30)}{DIM('RANK')}   {rc(BOLD(h.rank + '-Rank'))}"),
+        row(f"{DIM('TITLE')}  {GOLD(h.title)}"),
+        row(),
+        row(f"{DIM('XP')}     {CYAN(system.bar(h.xp_into_level, h.xp_per_level, 30))}  "
+            f"{h.xp_into_level}/{h.xp_per_level}"),
+        row(f"{DIM('       total')} {h.xp} XP  {DIM('·')}  {h.xp_per_level - h.xp_into_level} to level {h.level + 1}"),
+        mid(),
+    ]
+    stat_items = list(h.stats.items())
+    for i in range(0, len(stat_items), 2):
+        cells = []
+        for key, (val, name) in stat_items[i:i + 2]:
+            cells.append(pad(f"{BOLD(key)}  {pad(DIM(name), 13)}{GREEN(str(val).rjust(3))}", 26))
+        lines.append(row("   ".join(cells)))
+    lines += [
+        mid(),
+        row(f"{DIM('Skills')}  {h.skills_done}/{h.skills_total}   "
+            f"{DIM('Must-know')} {h.core_done}/{h.core_total}   "
+            f"{DIM('Boxes')} {h.boxes}   {DIM('Streak')} {h.streak}d"),
+        row(f"{DIM('Day')} {h.day}   {DIM('Achievements')} "
+            f"{sum(ok for _, ok in h.achievements)}/{len(h.achievements)}"),
+        row(),
+        bottom(),
+    ]
+    for ln in lines:
+        print(ln)
+        sleep(0.03)
+
+    active = [q for q in h.data.get("quests", []) if q["status"] == "active"]
+    if active:
+        print()
+        system_msg(f"You have {GOLD(str(len(active)))} active quest(s). "
+                   f"Type {CYAN('./hunter quest')} to view them.")
+    print()
+
+
+def cmd_skills() -> None:
+    h = system.compute()
+    print()
+    for i, p in enumerate(h.data.get("phases", []), 1):
+        done = sum(s["status"] == "done" for s in p["skills"])
+        total = len(p["skills"])
+        state = system.phase_state(p)
+        colour = GREEN if state == "done" else GOLD if state == "active" else DIM
+        print(colour(BOLD(f" {i}. {p['name']}")) + "  " + CYAN(system.bar(done, total, 12)) + f" {done}/{total}")
+        for s in p["skills"]:
+            mark = {"done": GREEN("[✓]"), "next": GOLD("[~]"), "later": DIM("[ ]")}[s["status"]]
+            star = GOLD(" ★") if s["core"] else ""
+            name = s["name"] if s["status"] != "later" else DIM(s["name"])
+            print(f"     {mark} {name}{star}")
+        print()
+    print(DIM("  [✓] done   [~] working on it   [ ] later   ★ must-know"))
+    print()
+
+
+DAILIES = [
+    ("Terminal Training", ["Learn 3 new commands", "Add them to cheatsheets/linux.md"]),
+    ("Bandit Run", ["Clear 1 OverTheWire Bandit level", "Write how you solved it in today's log"]),
+    ("Knowledge Trial", ["Pass any quiz with 80%+", "./hunter quiz"]),
+    ("Codex Study", ["Look up 5 words with ./hunter codex", "Explain one in your own words in your log"]),
+    ("Script Forge", ["Write a 5-line bash script", "Make it executable with chmod +x"]),
+    ("System Maintenance", ["sudo apt update && sudo apt full-upgrade -y", "Take a VirtualBox snapshot"]),
+    ("Dungeon Recon", ["Scan your OWN lab or 127.0.0.1", "Explain every open port you find"]),
+]
+
+
+def cmd_quest() -> None:
+    h = system.compute()
+    print()
+    print(top("Q U E S T   L O G"))
+    today = dt.date.today()
+    name, objs = DAILIES[today.toordinal() % len(DAILIES)]
+    print(row(GOLD(BOLD(f"DAILY QUEST: {name}"))))
+    for o in objs:
+        print(row(f"  - {o}"))
+    print(row(DIM("Reward: +20 XP for today's log. Skip it, lose the streak.")))
+    print(mid())
+    for q in h.data.get("quests", []):
+        st = q["status"]
+        head = {"done": GREEN("[CLEARED]"), "active": GOLD("[ACTIVE] "), "locked": DIM("[LOCKED] ")}[st]
+        title = q["title"] if st != "locked" else DIM(q["title"])
+        print(row(f"{head} {BOLD(title)}  {DIM(q.get('rank', 'E') + '-rank')}  {CYAN('+' + str(q.get('reward', 0)) + ' XP')}"))
+        if st == "active":
+            for o in q["objectives"]:
+                print(row(f"     - {o}"[:W]))
+            if q.get("quiz"):
+                print(row(f"     {DIM('Trial:')} {CYAN('./hunter quiz ' + q['quiz'])}"))
+    print(bottom())
+    print()
+
+
+def _quiz_topics() -> list[str]:
+    return sorted(p.stem for p in system.QUIZZES.glob("*.yml") if p.stem != "codex")
+
+
+def _set_status(kind: str, ident: str, new: str) -> bool:
+    """Edit progress.yml in place, keeping your comments and layout."""
+    lines = system.PROGRESS.read_text(encoding="utf-8").splitlines(keepends=True)
+    if kind == "quest":
+        start = next((i for i, l in enumerate(lines) if re.match(rf"\s*-\s*id:\s*{re.escape(ident)}\s*$", l)), None)
+    else:
+        start = next((i for i, l in enumerate(lines)
+                      if re.match(r"\s*-\s*name:\s*", l)
+                      and l.split("name:", 1)[1].strip().strip('"\'') == ident), None)
+    if start is None:
+        return False
+    indent = len(lines[start]) - len(lines[start].lstrip(" -"))
+    for j in range(start + 1, min(start + 12, len(lines))):
+        if re.match(r"\s*-\s", lines[j]) or (lines[j].strip() and len(lines[j]) - len(lines[j].lstrip()) < indent):
+            break
+        if re.match(r"\s*status:\s*\w+", lines[j]):
+            lines[j] = re.sub(r"status:\s*\w+", f"status: {new}", lines[j])
+            system.PROGRESS.write_text("".join(lines), encoding="utf-8")
+            return True
+    return False
+
+
+def _after_gain(before: system.Hunter, reason: str) -> None:
+    after = system.compute()
+    gained = after.xp - before.xp
+    print()
+    system_msg(f"{reason}  {GREEN('+' + str(gained) + ' XP')}")
+    new_ach = [a for (a, ok), (_, was) in zip(after.achievements, before.achievements) if ok and not was]
+    for a in new_ach:
+        sleep(0.2)
+        system_msg(f"Achievement unlocked: {GOLD(a['name'])}  {DIM(a.get('desc', ''))}")
+    if after.level > before.level:
+        sleep(0.3)
+        level_up(before.level, after.level, before.rank, after.rank)
+    print()
+    print(DIM("  Save your progress to GitHub:"))
+    print(CYAN('  git add progress.yml && git commit -m "⚔️ Level up" && git push'))
+    print()
+
+
+def cmd_quiz(topic: str | None) -> None:
+    topics = _quiz_topics()
+    if not topic:
+        print()
+        print(BOLD("  Available trials:"))
+        for t in topics:
+            d = yaml.safe_load((system.QUIZZES / f"{t}.yml").read_text(encoding="utf-8"))
+            print(f"   {d.get('emoji', '')} {CYAN(t):<22} {d.get('title', t)}  {DIM(d.get('rank', 'E') + '-rank')}")
+        print(DIM("\n  Start one with: ./hunter quiz nmap\n"))
+        return
+    if topic not in topics:
+        print(RED(f"No trial called '{topic}'. Try: {', '.join(topics)}"))
+        return
+
+    quiz = yaml.safe_load((system.QUIZZES / f"{topic}.yml").read_text(encoding="utf-8"))
+    questions = quiz["questions"][:]
+    random.shuffle(questions)
+    need = int(quiz.get("pass", 80))
+
+    print()
+    system_msg(f"A trial has begun: {GOLD(quiz.get('title', topic))}")
+    system_msg(f"Answer {len(questions)} questions. Score {need}% or more to clear it.")
+    print()
+
+    score = 0
+    for n, q in enumerate(questions, 1):
+        # shuffle the options but remember which one is right
+        correct_text = q["options"]["abcd".index(q["answer"])]
+        opts = q["options"][:]
+        random.shuffle(opts)
+        right = "abcd"[opts.index(correct_text)]
+
+        print(BOLD(f" Q{n}/{len(questions)}  ") + q["q"])
+        for letter, o in zip("abcd", opts):
+            print(f"     {CYAN(letter + ')')} {o}")
+        ans = ""
+        while ans not in ("a", "b", "c", "d"):
+            try:
+                ans = input(DIM("   your answer › ")).strip().lower()[:1]
+            except (EOFError, KeyboardInterrupt):
+                print(RED("\n  Trial abandoned."))
+                return
+        if ans == right:
+            score += 1
+            print(GREEN("   ✓ Correct.  ") + DIM(q.get("explain", "")))
+        else:
+            print(RED(f"   ✗ It was {right}) {correct_text}.  ") + DIM(q.get("explain", "")))
+        print()
+
+    pct = round(score / len(questions) * 100)
+    print(top("R E S U L T"))
+    print(row(f"Score: {BOLD(str(score))}/{len(questions)}   {CYAN(system.bar(score, len(questions), 20))}  {pct}%"))
+    print(bottom())
+
+    if pct < need:
+        system_msg(RED("Trial failed.") + f" You need {need}%. Study the explanations above and try again.")
+        print()
+        return
+
+    system_msg(GREEN(BOLD("TRIAL CLEARED.")))
+    before = system.compute()
+    quest = next((q for q in before.data.get("quests", [])
+                  if q.get("quiz") == topic and q["status"] == "active"), None)
+    if not quest:
+        system_msg(DIM("No active quest uses this trial, so no XP this time. Knowledge gained anyway."))
+        print()
+        return
+    print()
+    system_msg(f"Quest '{GOLD(quest['title'])}' has this trial as an objective.")
+    print(DIM("   Have you also finished its other objectives?"))
+    for o in quest["objectives"]:
+        print(DIM(f"     - {o}"))
+    try:
+        yes = input(BOLD("   Mark the quest complete? [y/N] › ")).strip().lower() == "y"
+    except (EOFError, KeyboardInterrupt):
+        yes = False
+    if yes and _set_status("quest", quest["id"], "done"):
+        _after_gain(before, f"Quest cleared: {quest['title']}")
+    else:
+        system_msg(DIM("Okay. Clear the other objectives, then run the trial again."))
+        print()
+
+
+def cmd_done(query: str | None) -> None:
+    data = system.load()
+    skills = [s for p in data.get("phases", []) for s in p["skills"]]
+    if not query:
+        print(DIM('\n  Usage: ./hunter done "part of the skill name"\n'))
+        return
+    hits = [s for s in skills if query.lower() in s["name"].lower()]
+    if not hits:
+        print(RED(f"\n  No skill matches '{query}'. See them all with ./hunter skills\n"))
+        return
+    if len(hits) > 1:
+        print(GOLD("\n  More than one skill matches. Be more specific:"))
+        for s in hits:
+            print(f"   - {s['name']}")
+        print()
+        return
+    s = hits[0]
+    if s["status"] == "done":
+        print(DIM(f"\n  '{s['name']}' is already done.\n"))
+        return
+    before = system.compute(data)
+    if _set_status("skill", s["name"], "done"):
+        _after_gain(before, f"Skill learned: {s['name']}")
+    else:
+        print(RED("\n  Couldn't find that skill's status line in progress.yml.\n"))
+
+
+def cmd_codex(word: str | None) -> None:
+    terms = yaml.safe_load((system.QUIZZES / "codex.yml").read_text(encoding="utf-8"))["terms"]
+    print()
+    if not word:
+        print(BOLD("  📖 The Codex") + DIM(f"  ({len(terms)} entries)"))
+        names = sorted(terms)
+        for i in range(0, len(names), 6):
+            print("   " + "  ".join(CYAN(n) for n in names[i:i + 6]))
+        print(DIM("\n  Look one up: ./hunter codex port\n"))
+        return
+    key = word.lower()
+    if key not in terms:
+        close = [t for t in terms if key in t or t in key]
+        print(RED(f"  '{word}' isn't in the Codex yet.") + (f" Did you mean: {', '.join(close)}?" if close else ""))
+        print(DIM("  Add it yourself in quizzes/codex.yml\n"))
+        return
+    type_out(f"  {GOLD(BOLD(key.upper()))}")
+    type_out(f"  {terms[key]}", 0.006)
+    print()
+
+
+def level_up(old: int = 4, new: int = 5, old_rank: str = "E", new_rank: str = "D") -> None:
+    """The ding. Flashes a banner, then announces any rank change."""
+    banner = [
+        "██╗     ███████╗██╗   ██╗███████╗██╗         ██╗   ██╗██████╗ ",
+        "██║     ██╔════╝██║   ██║██╔════╝██║         ██║   ██║██╔══██╗",
+        "██║     █████╗  ██║   ██║█████╗  ██║         ██║   ██║██████╔╝",
+        "██║     ██╔══╝  ╚██╗ ██╔╝██╔══╝  ██║         ██║   ██║██╔═══╝ ",
+        "███████╗███████╗ ╚████╔╝ ███████╗███████╗    ╚██████╔╝██║     ",
+        "╚══════╝╚══════╝  ╚═══╝  ╚══════╝╚══════╝     ╚═════╝ ╚═╝     ",
+    ]
+    print()
+    if not FAST:
+        for colour in (BLUE, CYAN, GOLD):          # flash through colours
+            for ln in banner:
+                print(colour(ln))
+            time.sleep(0.18)
+            sys.stdout.write(f"\033[{len(banner)}A")   # move cursor back up
+    for ln in banner:
+        print(GOLD(BOLD(ln)))
+    print()
+    type_out(f"  {DIM('LEVEL')} {old}  {CYAN('──▶')}  {GOLD(BOLD(str(new)))}", 0.03)
+    if new_rank != old_rank:
+        sleep(0.4)
+        rc = RANK_COLOR.get(new_rank, BOLD)
+        print()
+        system_msg(f"Your rank has been re-evaluated: {DIM(old_rank + '-Rank')} {CYAN('──▶')} {rc(BOLD(new_rank + '-Rank'))}")
+    print()
+
+
+def main() -> None:
+    args = [a for a in sys.argv[1:] if a != "--fast"]
+    cmd = args[0] if args else "status"
+    rest = " ".join(args[1:]) or None
+    if cmd in ("status", "s"):
+        cmd_status()
+    elif cmd in ("skills", "tree"):
+        cmd_skills()
+    elif cmd in ("quest", "quests", "q"):
+        cmd_quest()
+    elif cmd == "quiz":
+        cmd_quiz(rest)
+    elif cmd == "done":
+        cmd_done(rest)
+    elif cmd == "codex":
+        cmd_codex(rest)
+    elif cmd == "levelup":
+        h = system.compute()
+        level_up(max(h.level - 1, 1), h.level, h.rank, h.rank)
+    else:
+        print(__doc__)
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,74 @@
+title: Networking Trial
+emoji: "🌐"
+rank: D
+pass: 80
+questions:
+  - q: "What is a port?"
+    options:
+      - A physical socket on the back of your PC
+      - A numbered door on a computer that lets traffic reach a specific program
+      - A type of cable
+      - Another word for IP address
+    answer: b
+    explain: "The IP address finds the machine; the port finds the program on it (22 = SSH, 80 = HTTP, 443 = HTTPS)."
+
+  - q: "What is the main difference between TCP and UDP?"
+    options:
+      - TCP is faster, UDP is slower
+      - TCP sets up a connection and checks delivery; UDP just sends and doesn't check
+      - UDP is only for websites
+      - There is no difference
+    answer: b
+    explain: "TCP: reliable, ordered (web, SSH). UDP: quick, no handshake (DNS, games, video calls)."
+
+  - q: "What is the order of the TCP three-way handshake?"
+    options: ["ACK, SYN, FIN", "SYN, SYN-ACK, ACK", "HELLO, OK, GO", "SYN, ACK, SYN-ACK"]
+    answer: b
+    explain: "Client SYN → server SYN-ACK → client ACK. An nmap SYN scan stops after the SYN-ACK."
+
+  - q: "What does DNS do?"
+    options:
+      - Encrypts your traffic
+      - Turns names like google.com into IP addresses
+      - Blocks hackers
+      - Assigns ports
+    answer: b
+    explain: "That's why 'Temporary failure resolving http.kali.org' meant a DNS / network problem."
+
+  - q: "Which port does HTTPS normally use?"
+    options: ["22", "80", "443", "3389"]
+    answer: c
+    explain: "22 SSH, 80 HTTP, 443 HTTPS, 3389 Windows Remote Desktop."
+
+  - q: "What is 127.0.0.1?"
+    options: ["Google's DNS", "Your router", "Loopback: always 'this computer'", "A public website"]
+    answer: c
+    explain: "Scanning 127.0.0.1 scans the machine you're sitting on."
+
+  - q: "How many usable host addresses are in 192.168.56.0/24?"
+    options: ["24", "254", "256", "65,536"]
+    answer: b
+    explain: "/24 = 256 addresses, minus the network address (.0) and broadcast (.255) = 254."
+
+  - q: "Which of these is a PRIVATE (not internet-routable) address?"
+    options: ["8.8.8.8", "45.33.32.156", "192.168.1.20", "1.1.1.1"]
+    answer: c
+    explain: "Private ranges: 10.x.x.x, 172.16-31.x.x, 192.168.x.x. 45.33.32.156 was scanme.nmap.org."
+
+  - q: "What does a VirtualBox HOST-ONLY network let VMs do?"
+    options:
+      - Reach the internet directly
+      - Talk to each other and the host, but not the internet
+      - Nothing at all
+      - Share your Wi-Fi password
+    answer: b
+    explain: "Perfect for a lab: Kali can reach Metasploitable, and Metasploitable can't reach the internet."
+
+  - q: "What does NAT do for your Kali VM?"
+    options:
+      - Lets it use the host's internet connection while hiding it behind the host
+      - Gives it a public IP address
+      - Blocks all traffic
+      - Speeds up the CPU
+    answer: a
+    explain: "Handy for updates. But it's also why nmap fingerprinted VirtualBox's relay instead of scanme."

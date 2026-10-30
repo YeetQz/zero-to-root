@@ -1,16 +1,46 @@
-# 🐉 zero-to-root progress file
+# 🐉 zero-to-root · THE SYSTEM
 #
-# This file drives the README. Change a skill's status, commit, push,
-# and the GitHub Action redraws the progress bar, roadmap, badges and achievements.
+# This file is your save file. Change a skill or quest status, commit, push,
+# and the GitHub Action redraws the README (status window, XP, rank, skill tree).
+# On Kali, run ./hunter to see it in your terminal.
 #
-#   status: done   ✅ learned it
-#   status: next   🔥 working on it now
-#   status: later  🔒 not started yet
-#   core: true     ⭐ must-know fundamental
+#   skills:  status: done ✅ | next 🔥 | later 🔒      core: true = ⭐ must-know
+#   quests:  status: done ✅ | active ⚔️ | locked 🔒
 
-hacker: mykali
+hunter: mykali
 started: 2026-10-30
 
+# ─────────────────────────────────────────────
+# ⚡ XP rules (how you level up)
+# ─────────────────────────────────────────────
+xp:
+  skill: 100          # each skill marked done
+  core_skill: 150     # each ⭐ must-know skill marked done
+  log: 20             # each daily log in logs/
+  box: 300            # each write-up in writeups/
+  achievement: 50     # each unlocked achievement
+  per_level: 375      # XP needed per level
+
+# Rank by level (like hunter ranks in Solo Leveling)
+ranks:
+  - { rank: E, from: 1,  job: Novice Hunter }
+  - { rank: D, from: 5,  job: Hunter }
+  - { rank: C, from: 10, job: Skilled Hunter }
+  - { rank: B, from: 15, job: Elite Hunter }
+  - { rank: A, from: 20, job: Shadow Operator }
+  - { rank: S, from: 30, job: Monarch of Root }
+
+# Which paths train which stat
+stats:
+  STR: { name: Strength,     phases: [exploit, passwords] }
+  AGI: { name: Agility,      phases: [web] }
+  SEN: { name: Sense,        phases: [recon] }
+  VIT: { name: Vitality,     phases: [lab, thm, practice] }
+  INT: { name: Intelligence, phases: [linux, bash] }
+
+# ─────────────────────────────────────────────
+# 🌳 Skill paths
+# ─────────────────────────────────────────────
 phases:
   - id: lab
     name: Set up your lab
@@ -35,11 +65,65 @@ phases:
       - name: Linux command line (OverTheWire Bandit)
         status: next
         core: true
+      - name: Files, folders and permissions
+        status: later
+        core: true
+      - name: Users, sudo and root
+        status: later
+        core: true
+      - name: Processes, services and packages
+        status: later
       - name: How networks work (IP, TCP/UDP, ports, DNS)
         status: later
         core: true
       - name: Wireshark - watch real packets
         status: later
+
+  - id: bash
+    name: Bash scripting
+    emoji: "🐚"
+    skills:
+      - name: Variables, echo and read
+        status: later
+        core: true
+      - name: If/else and tests
+        status: later
+        core: true
+      - name: Loops (for and while)
+        status: later
+        core: true
+      - name: Functions and script arguments
+        status: later
+      - name: Text tools (grep, cut, sort, awk)
+        status: later
+        core: true
+      - name: Build your own lab helper script
+        status: later
+
+  - id: thm
+    name: TryHackMe quest line
+    emoji: "🎮"
+    skills:
+      - name: "THM: Tutorial + connect with OpenVPN"
+        status: later
+        core: true
+      - name: "THM: Linux Fundamentals 1, 2 and 3"
+        status: later
+        core: true
+      - name: "THM: Pre Security path"
+        status: later
+        core: true
+      - name: "THM: Nmap room"
+        status: later
+      - name: "THM: Bash Scripting room"
+        status: later
+      - name: "THM: Burp Suite basics"
+        status: later
+      - name: "THM: OWASP Top 10"
+        status: later
+      - name: TryHackMe Jr Penetration Tester path
+        status: later
+        core: true
 
   - id: recon
     name: Recon & scanning
@@ -64,6 +148,9 @@ phases:
     name: Web hacking
     emoji: "🌐"
     skills:
+      - name: How websites work (HTTP, cookies, sessions)
+        status: later
+        core: true
       - name: Burp Suite - intercept web requests
         status: later
         core: true
@@ -99,66 +186,104 @@ phases:
     name: Practice & level up
     emoji: "🏆"
     skills:
-      - name: TryHackMe Jr Penetration Tester path
-        status: later
-        core: true
       - name: Hack The Box Starting Point
         status: later
       - name: Write notes for every box you finish
         status: later
 
-# 🏅 Achievements unlock automatically.
-#   skill: <name>     -> unlocks when that skill is done
-#   phase: <id>       -> unlocks when every skill in that phase is done
-#   boxes: <number>   -> unlocks at that many write-ups in writeups/
-#   streak: <number>  -> unlocks at that many days in a row with a log
-#   logs: <number>    -> unlocks at that many log entries
+# ─────────────────────────────────────────────
+# ⚔️ Quests (main story). Pass the quiz with ./hunter quiz <topic>
+# ─────────────────────────────────────────────
+quests:
+  - id: q01
+    title: The Awakening
+    rank: E
+    reward: 200
+    status: done
+    objectives:
+      - Install Kali in VirtualBox
+      - Defeat the Hyper-V turtle
+      - Boot to the Kali desktop
+  - id: q02
+    title: First Scan
+    rank: E
+    reward: 200
+    status: active
+    quiz: nmap
+    objectives:
+      - Scan your own machine with nmap
+      - Watch port 22 flip from closed to open
+      - Run -A against scanme.nmap.org and save the result
+      - Pass the nmap quiz (80%+)
+  - id: q03
+    title: Shell Initiate
+    rank: E
+    reward: 300
+    status: active
+    quiz: linux
+    objectives:
+      - Clear OverTheWire Bandit levels 0 to 5
+      - Add 5 new commands to cheatsheets/linux.md
+      - Pass the linux quiz (80%+)
+  - id: q04
+    title: Packet Whisperer
+    rank: D
+    reward: 300
+    status: locked
+    quiz: networking
+    objectives:
+      - Finish the networking rooms of the TryHackMe Pre Security path
+      - Explain TCP vs UDP in your own words in a log
+      - Pass the networking quiz (80%+)
+  - id: q05
+    title: Scriptsmith
+    rank: D
+    reward: 300
+    status: locked
+    quiz: bash
+    objectives:
+      - Write 3 bash scripts and save them in scripts/practice/
+      - Use a loop, an if/else and a function at least once
+      - Pass the bash quiz (80%+)
+  - id: q06
+    title: "Dungeon Gate: Home Lab"
+    rank: D
+    reward: 400
+    status: locked
+    objectives:
+      - Create a host-only network in VirtualBox
+      - Boot Metasploitable 2 on it (never on NAT or bridged)
+      - Find it from Kali with nmap -sn
+      - Write lab/network.md describing your lab
+  - id: q07
+    title: Enter the Tower
+    rank: D
+    reward: 300
+    status: locked
+    objectives:
+      - Make a free TryHackMe account
+      - Finish the Tutorial room over OpenVPN from Kali
+      - Clear Linux Fundamentals 1, 2 and 3
+
+# ─────────────────────────────────────────────
+# 🏅 Achievements (unlock automatically)
+#   skill: <name> | phase: <id> | quest: <id> | boxes: N | streak: N | logs: N | level: N
+# ─────────────────────────────────────────────
 achievements:
-  - name: First Boot
-    emoji: "🐉"
-    desc: Got Kali running in a VM
-    skill: Install Kali in VirtualBox
-  - name: Turtle Slayer
-    emoji: "🐢"
-    desc: Kicked Hyper-V out from under VirtualBox
-    skill: Fix the Hyper-V / VBS conflict
-  - name: First Scan
-    emoji: "📡"
-    desc: Ran a first nmap scan
-    skill: Scan your own machine
-  - name: Open Port Hunter
-    emoji: "🚪"
-    desc: Watched a port flip from closed to open
-    skill: Open vs closed vs filtered
-  - name: Version Detective
-    emoji: "🕵️"
-    desc: Identified exact software with -sV
-    skill: Version detection with -sV
-  - name: Dear Diary
-    emoji: "📓"
-    desc: Wrote a first hacker log
-    logs: 1
-  - name: Lab Rat
-    emoji: "🧪"
-    desc: Finished the whole lab phase
-    phase: lab
-  - name: Terminal Wizard
-    emoji: "🧙"
-    desc: Finished Linux & networking basics
-    phase: linux
-  - name: On Fire
-    emoji: "🔥"
-    desc: Logged 7 days in a row
-    streak: 7
-  - name: First Blood
-    emoji: "💀"
-    desc: Wrote up a first hacked box
-    boxes: 1
-  - name: Web Slinger
-    emoji: "🕸️"
-    desc: Finished the web hacking phase
-    phase: web
-  - name: Root Collector
-    emoji: "👑"
-    desc: Wrote up 10 boxes
-    boxes: 10
+  - { name: First Boot,       emoji: "🐉", desc: Got Kali running in a VM,                 skill: Install Kali in VirtualBox }
+  - { name: Turtle Slayer,    emoji: "🐢", desc: Kicked Hyper-V out from under VirtualBox, skill: Fix the Hyper-V / VBS conflict }
+  - { name: First Scan,       emoji: "📡", desc: Ran a first nmap scan,                    skill: Scan your own machine }
+  - { name: Open Port Hunter, emoji: "🚪", desc: Watched a port flip from closed to open,  skill: Open vs closed vs filtered }
+  - { name: Version Detective, emoji: "🕵️", desc: Identified exact software with -sV,      skill: Version detection with -sV }
+  - { name: Dear Diary,       emoji: "📓", desc: Wrote a first hacker log,                  logs: 1 }
+  - { name: Rank Up,          emoji: "⬆️", desc: Reached D-rank (level 5),                  level: 5 }
+  - { name: Quiz Slayer,      emoji: "🧠", desc: Cleared a quest by passing its quiz,       quest: q02 }
+  - { name: Lab Rat,          emoji: "🧪", desc: Finished the whole lab phase,              phase: lab }
+  - { name: Terminal Wizard,  emoji: "🧙", desc: Finished Linux & networking basics,         phase: linux }
+  - { name: Scriptsmith,      emoji: "⚒️", desc: Finished the Bash scripting path,          phase: bash }
+  - { name: Tower Climber,    emoji: "🗼", desc: Finished the TryHackMe quest line,          phase: thm }
+  - { name: On Fire,          emoji: "🔥", desc: Logged 7 days in a row,                    streak: 7 }
+  - { name: First Blood,      emoji: "💀", desc: Wrote up a first hacked box,               boxes: 1 }
+  - { name: Web Slinger,      emoji: "🕸️", desc: Finished the web hacking phase,            phase: web }
+  - { name: C-Rank Hunter,    emoji: "🗡️", desc: Reached level 10,                          level: 10 }
+  - { name: Root Collector,   emoji: "👑", desc: Wrote up 10 boxes,                         boxes: 10 }
