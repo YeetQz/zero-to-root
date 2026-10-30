@@ -1,0 +1,46 @@
+# 🚫 Never commit secrets or real target data
+
+# VPN configs (TryHackMe / Hack The Box) contain private keys
+*.ovpn
+*.conf.vpn
+
+# Credentials, keys, tokens
+.env
+*.key
+*.pem
+id_rsa*
+id_ed25519*
+*credentials*
+*secret*
+
+# Captured traffic and hashes
+*.pcap
+*.pcapng
+*.cap
+*.hccapx
+*.22000
+hashes*.txt
+*.pot
+john.pot
+hashcat.potfile
+
+# Raw scan output (may contain real IPs). Keep cleaned copies inside write-ups instead.
+scans/
+*.nmap
+*.gnmap
+*.xml
+
+# Loot from boxes
+loot/
+flags/
+
+# Big wordlists
+rockyou.txt
+*.wordlist
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+__pycache__/

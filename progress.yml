@@ -1,0 +1,164 @@
+# 🐉 zero-to-root progress file
+#
+# This file drives the README. Change a skill's status, commit, push,
+# and the GitHub Action redraws the progress bar, roadmap, badges and achievements.
+#
+#   status: done   ✅ learned it
+#   status: next   🔥 working on it now
+#   status: later  🔒 not started yet
+#   core: true     ⭐ must-know fundamental
+
+hacker: mykali
+started: 2026-10-30
+
+phases:
+  - id: lab
+    name: Set up your lab
+    emoji: "🧪"
+    skills:
+      - name: Install Kali in VirtualBox
+        status: done
+        core: true
+      - name: Fix the Hyper-V / VBS conflict
+        status: done
+      - name: Update Kali and check the internet
+        status: next
+        core: true
+      - name: Build a home lab (Metasploitable 2 + DVWA)
+        status: next
+        core: true
+
+  - id: linux
+    name: Linux & networking basics
+    emoji: "🐧"
+    skills:
+      - name: Linux command line (OverTheWire Bandit)
+        status: next
+        core: true
+      - name: How networks work (IP, TCP/UDP, ports, DNS)
+        status: later
+        core: true
+      - name: Wireshark - watch real packets
+        status: later
+
+  - id: recon
+    name: Recon & scanning
+    emoji: "🔍"
+    skills:
+      - name: Scan your own machine
+        status: done
+        core: true
+      - name: Open vs closed vs filtered
+        status: done
+        core: true
+      - name: Version detection with -sV
+        status: done
+        core: true
+      - name: Aggressive scan (-A) and saving results
+        status: done
+      - name: All ports, UDP and NSE scripts
+        status: next
+        core: true
+
+  - id: web
+    name: Web hacking
+    emoji: "🌐"
+    skills:
+      - name: Burp Suite - intercept web requests
+        status: later
+        core: true
+      - name: Find hidden pages with gobuster / ffuf
+        status: later
+      - name: SQL injection (by hand, then sqlmap)
+        status: later
+        core: true
+      - name: Cross-site scripting (XSS)
+        status: later
+
+  - id: exploit
+    name: Exploitation
+    emoji: "💥"
+    skills:
+      - name: Metasploit basics
+        status: later
+        core: true
+      - name: Linux privilege escalation
+        status: later
+
+  - id: passwords
+    name: Passwords & hashes
+    emoji: "🔑"
+    skills:
+      - name: How password hashes work
+        status: later
+        core: true
+      - name: Crack hashes with John and Hashcat
+        status: later
+
+  - id: practice
+    name: Practice & level up
+    emoji: "🏆"
+    skills:
+      - name: TryHackMe Jr Penetration Tester path
+        status: later
+        core: true
+      - name: Hack The Box Starting Point
+        status: later
+      - name: Write notes for every box you finish
+        status: later
+
+# 🏅 Achievements unlock automatically.
+#   skill: <name>     -> unlocks when that skill is done
+#   phase: <id>       -> unlocks when every skill in that phase is done
+#   boxes: <number>   -> unlocks at that many write-ups in writeups/
+#   streak: <number>  -> unlocks at that many days in a row with a log
+#   logs: <number>    -> unlocks at that many log entries
+achievements:
+  - name: First Boot
+    emoji: "🐉"
+    desc: Got Kali running in a VM
+    skill: Install Kali in VirtualBox
+  - name: Turtle Slayer
+    emoji: "🐢"
+    desc: Kicked Hyper-V out from under VirtualBox
+    skill: Fix the Hyper-V / VBS conflict
+  - name: First Scan
+    emoji: "📡"
+    desc: Ran a first nmap scan
+    skill: Scan your own machine
+  - name: Open Port Hunter
+    emoji: "🚪"
+    desc: Watched a port flip from closed to open
+    skill: Open vs closed vs filtered
+  - name: Version Detective
+    emoji: "🕵️"
+    desc: Identified exact software with -sV
+    skill: Version detection with -sV
+  - name: Dear Diary
+    emoji: "📓"
+    desc: Wrote a first hacker log
+    logs: 1
+  - name: Lab Rat
+    emoji: "🧪"
+    desc: Finished the whole lab phase
+    phase: lab
+  - name: Terminal Wizard
+    emoji: "🧙"
+    desc: Finished Linux & networking basics
+    phase: linux
+  - name: On Fire
+    emoji: "🔥"
+    desc: Logged 7 days in a row
+    streak: 7
+  - name: First Blood
+    emoji: "💀"
+    desc: Wrote up a first hacked box
+    boxes: 1
+  - name: Web Slinger
+    emoji: "🕸️"
+    desc: Finished the web hacking phase
+    phase: web
+  - name: Root Collector
+    emoji: "👑"
+    desc: Wrote up 10 boxes
+    boxes: 10
