@@ -1,12 +1,12 @@
 # 💀 Box name
 
-<!-- Copy to writeups/tryhackme/<box>.md or writeups/htb/<box>.md.
+<!-- Copy to writeups/vulnhub/<box>.md, writeups/picoctf/<set>.md, writeups/overthewire/<game>.md or writeups/lab/<box>.md.
      Each write-up (except this template) counts toward the "Boxes pwned" badge.
-     Hack The Box: only publish write-ups for RETIRED machines. -->
+     picoGym and OverTheWire: explain the idea, never post flags or passwords. -->
 
 | | |
 |---|---|
-| 🏷️ Platform | TryHackMe / Hack The Box / my lab |
+| 🏷️ Platform | VulnHub / picoGym / OverTheWire / my lab |
 | 📶 Difficulty | Easy / Medium / Hard |
 | 📅 Date | YYYY-MM-DD |
 | 🧰 Tools | nmap, gobuster, ... |

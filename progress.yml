@@ -34,8 +34,8 @@ ranks:
 stats:
   STR: { name: Strength,     phases: [exploit, passwords] }
   AGI: { name: Agility,      phases: [web] }
-  SEN: { name: Sense,        phases: [recon] }
-  VIT: { name: Vitality,     phases: [lab, thm, practice] }
+  SEN: { name: Sense,        phases: [recon, track] }
+  VIT: { name: Vitality,     phases: [lab, free, practice] }
   INT: { name: Intelligence, phases: [linux, bash] }
 
 # ─────────────────────────────────────────────
@@ -100,30 +100,52 @@ phases:
       - name: Build your own lab helper script
         status: later
 
-  - id: thm
-    name: TryHackMe quest line
-    emoji: "🎮"
+  - id: track
+    name: Network tracking & privacy
+    emoji: "🛰️"
     skills:
-      - name: "THM: Tutorial + connect with OpenVPN"
+      - name: How IP geolocation works (look up your own IP)
         status: later
         core: true
-      - name: "THM: Linux Fundamentals 1, 2 and 3"
+      - name: Public vs private IP, NAT and your router
         status: later
         core: true
-      - name: "THM: Pre Security path"
+      - name: "How games connect: P2P vs relay vs dedicated servers"
         status: later
         core: true
-      - name: "THM: Nmap room"
+      - name: What Discord and chat apps can and can't reveal
         status: later
-      - name: "THM: Bash Scripting room"
+      - name: Watch your own traffic with Wireshark
         status: later
-      - name: "THM: Burp Suite basics"
-        status: later
-      - name: "THM: OWASP Top 10"
-        status: later
-      - name: TryHackMe Jr Penetration Tester path
+      - name: OSINT yourself (what your usernames reveal)
         status: later
         core: true
+      - name: "Lock it down: VPN, privacy settings, router"
+        status: later
+        core: true
+
+  - id: free
+    name: Free training grounds
+    emoji: "🏯"
+    skills:
+      - name: "picoGym: solve 25 beginner challenges"
+        status: later
+        core: true
+      - name: "OverTheWire Leviathan (Linux tricks)"
+        status: later
+      - name: "OverTheWire Natas 0-10 (web basics)"
+        status: later
+        core: true
+      - name: "PortSwigger Academy: first 10 labs"
+        status: later
+        core: true
+      - name: "OWASP Juice Shop: 10 challenges in your lab"
+        status: later
+      - name: "VulnHub: root Basic Pentesting 1"
+        status: later
+        core: true
+      - name: "VulnHub: root DC-1"
+        status: later
 
   - id: recon
     name: Recon & scanning
@@ -186,8 +208,9 @@ phases:
     name: Practice & level up
     emoji: "🏆"
     skills:
-      - name: Hack The Box Starting Point
+      - name: Root 5 VulnHub boxes and write them up
         status: later
+        core: true
       - name: Write notes for every box you finish
         status: later
 
@@ -232,7 +255,7 @@ quests:
     status: locked
     quiz: networking
     objectives:
-      - Finish the networking rooms of the TryHackMe Pre Security path
+      - Watch Professor Messer's free Network+ videos on IP addressing, ports and protocols
       - Explain TCP vs UDP in your own words in a log
       - Pass the networking quiz (80%+)
   - id: q05
@@ -256,14 +279,26 @@ quests:
       - Find it from Kali with nmap -sn
       - Write lab/network.md describing your lab
   - id: q07
-    title: Enter the Tower
+    title: Enter the Dungeon
     rank: D
     reward: 300
     status: locked
     objectives:
-      - Make a free TryHackMe account
-      - Finish the Tutorial room over OpenVPN from Kali
-      - Clear Linux Fundamentals 1, 2 and 3
+      - Make a free picoGym account
+      - Solve 10 General Skills challenges
+      - Clear OverTheWire Leviathan levels 0 to 3
+  - id: q08
+    title: Ghost Protocol
+    rank: D
+    reward: 400
+    status: locked
+    quiz: privacy
+    objectives:
+      - Look up your own public IP and compare its location with where you really are
+      - Find out whether your main game uses P2P or dedicated servers
+      - Search your own gamer tags and list everything you find
+      - Fix 3 privacy settings (Discord, Steam/console, router)
+      - Pass the privacy quiz (80%+)
 
 # ─────────────────────────────────────────────
 # 🏅 Achievements (unlock automatically)
@@ -281,7 +316,8 @@ achievements:
   - { name: Lab Rat,          emoji: "🧪", desc: Finished the whole lab phase,              phase: lab }
   - { name: Terminal Wizard,  emoji: "🧙", desc: Finished Linux & networking basics,         phase: linux }
   - { name: Scriptsmith,      emoji: "⚒️", desc: Finished the Bash scripting path,          phase: bash }
-  - { name: Tower Climber,    emoji: "🗼", desc: Finished the TryHackMe quest line,          phase: thm }
+  - { name: Dungeon Crawler,  emoji: "🏯", desc: Finished the free training grounds,        phase: free }
+  - { name: Ghost,            emoji: "👻", desc: Finished the tracking & privacy path,      phase: track }
   - { name: On Fire,          emoji: "🔥", desc: Logged 7 days in a row,                    streak: 7 }
   - { name: First Blood,      emoji: "💀", desc: Wrote up a first hacked box,               boxes: 1 }
   - { name: Web Slinger,      emoji: "🕸️", desc: Finished the web hacking phase,            phase: web }

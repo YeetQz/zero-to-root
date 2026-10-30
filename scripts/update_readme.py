@@ -100,10 +100,10 @@ def section_roadmap(h) -> str:
         text = f"{p.get('emoji', '')} {p['name']}<br/>{d}/{len(p['skills'])}".replace('"', "'")
         out.append(f'    {p["id"]}["{text}"]:::{system.phase_state(p)}')
     ids = {p["id"] for p in phases}
-    # a branching tree: lab → linux → (bash, thm) → recon → web → (exploit, passwords) → practice → root
-    edges = [("lab", "linux"), ("linux", "bash"), ("linux", "thm"), ("bash", "recon"), ("thm", "recon"),
-             ("recon", "web"), ("web", "exploit"), ("web", "passwords"), ("exploit", "practice"),
-             ("passwords", "practice")]
+    # a branching tree: lab → linux → (bash, track) → recon → web → (exploit, passwords) → free → practice → root
+    edges = [("lab", "linux"), ("linux", "bash"), ("linux", "track"), ("bash", "recon"), ("track", "recon"),
+             ("recon", "web"), ("web", "exploit"), ("web", "passwords"), ("exploit", "free"),
+             ("passwords", "free"), ("free", "practice")]
     used = [(a, b) for a, b in edges if a in ids and b in ids]
     if not used:
         used = list(zip([p["id"] for p in phases], [p["id"] for p in phases][1:]))

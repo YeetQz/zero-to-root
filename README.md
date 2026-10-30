@@ -26,7 +26,7 @@
 <p align="center"><img src="assets/status.svg" alt="Animated hunter status window" width="100%" /></p>
 
 > **[SYSTEM]** mykali is an **E-Rank Novice Hunter**. 180 XP until level 5.  
-> XP sources: Skills 800 · Quests 200 · Logs 20 · Achievements 300 · 6/17 achievements
+> XP sources: Skills 800 · Quests 200 · Logs 20 · Achievements 300 · 6/18 achievements
 <!--HUNTER:END-->
 
 ## ⚔️ Quests
@@ -40,7 +40,8 @@
 | 🔒 | _Packet Whisperer_ | D | +300 XP | `./hunter quiz networking` |
 | 🔒 | _Scriptsmith_ | D | +300 XP | `./hunter quiz bash` |
 | 🔒 | _Dungeon Gate: Home Lab_ | D | +400 XP |  |
-| 🔒 | _Enter the Tower_ | D | +300 XP |  |
+| 🔒 | _Enter the Dungeon_ | D | +300 XP |  |
+| 🔒 | _Ghost Protocol_ | D | +400 XP | `./hunter quiz privacy` |
 
 <details>
 <summary>⚔️ <b>First Scan</b> objectives</summary>
@@ -66,8 +67,8 @@
 
 <!--PROGRESS:START-->
 ```text
-Overall      ████░░░░░░░░░░░░░░░░░░░░░░░░░░   15%  (6/40 skills)
-Must-knows ⭐ █████░░░░░░░░░░░░░░░░░░░░░░░░░   17%  (4/24)
+Overall      ████░░░░░░░░░░░░░░░░░░░░░░░░░░   13%  (6/46 skills)
+Must-knows ⭐ ████░░░░░░░░░░░░░░░░░░░░░░░░░░   13%  (4/30)
 In progress  🔥 4 skills
 ```
 
@@ -76,12 +77,13 @@ In progress  🔥 4 skills
 | 🧪 | **1. Set up your lab** | `█████░░░░░` | 2/4 | 🔥 In progress |
 | 🐧 | **2. Linux & networking basics** | `░░░░░░░░░░` | 0/6 | 🔥 In progress |
 | 🐚 | **3. Bash scripting** | `░░░░░░░░░░` | 0/6 | 🔒 Locked |
-| 🎮 | **4. TryHackMe quest line** | `░░░░░░░░░░` | 0/8 | 🔒 Locked |
-| 🔍 | **5. Recon & scanning** | `████████░░` | 4/5 | 🔥 In progress |
-| 🌐 | **6. Web hacking** | `░░░░░░░░░░` | 0/5 | 🔒 Locked |
-| 💥 | **7. Exploitation** | `░░░░░░░░░░` | 0/2 | 🔒 Locked |
-| 🔑 | **8. Passwords & hashes** | `░░░░░░░░░░` | 0/2 | 🔒 Locked |
-| 🏆 | **9. Practice & level up** | `░░░░░░░░░░` | 0/2 | 🔒 Locked |
+| 🛰️ | **4. Network tracking & privacy** | `░░░░░░░░░░` | 0/7 | 🔒 Locked |
+| 🏯 | **5. Free training grounds** | `░░░░░░░░░░` | 0/7 | 🔒 Locked |
+| 🔍 | **6. Recon & scanning** | `████████░░` | 4/5 | 🔥 In progress |
+| 🌐 | **7. Web hacking** | `░░░░░░░░░░` | 0/5 | 🔒 Locked |
+| 💥 | **8. Exploitation** | `░░░░░░░░░░` | 0/2 | 🔒 Locked |
+| 🔑 | **9. Passwords & hashes** | `░░░░░░░░░░` | 0/2 | 🔒 Locked |
+| 🏆 | **10. Practice & level up** | `░░░░░░░░░░` | 0/2 | 🔒 Locked |
 <!--PROGRESS:END-->
 
 ## 🌳 Skill tree
@@ -92,7 +94,8 @@ flowchart TD
     lab["🧪 Set up your lab<br/>2/4"]:::active
     linux["🐧 Linux & networking basics<br/>0/6"]:::active
     bash["🐚 Bash scripting<br/>0/6"]:::locked
-    thm["🎮 TryHackMe quest line<br/>0/8"]:::locked
+    track["🛰️ Network tracking & privacy<br/>0/7"]:::locked
+    free["🏯 Free training grounds<br/>0/7"]:::locked
     recon["🔍 Recon & scanning<br/>4/5"]:::active
     web["🌐 Web hacking<br/>0/5"]:::locked
     exploit["💥 Exploitation<br/>0/2"]:::locked
@@ -100,14 +103,15 @@ flowchart TD
     practice["🏆 Practice & level up<br/>0/2"]:::locked
     lab --> linux
     linux --> bash
-    linux --> thm
+    linux --> track
     bash --> recon
-    thm --> recon
+    track --> recon
     recon --> web
     web --> exploit
     web --> passwords
-    exploit --> practice
-    passwords --> practice
+    exploit --> free
+    passwords --> free
+    free --> practice
     root(("👑 root")):::locked
     practice --> root
     classDef done fill:#2ea043,stroke:#1a7f37,color:#ffffff
@@ -145,18 +149,27 @@ flowchart TD
 - 🔒 Text tools (grep, cut, sort, awk) ⭐
 - 🔒 Build your own lab helper script
 
-**🎮 4. TryHackMe quest line**
+**🛰️ 4. Network tracking & privacy**
 
-- 🔒 THM: Tutorial + connect with OpenVPN ⭐
-- 🔒 THM: Linux Fundamentals 1, 2 and 3 ⭐
-- 🔒 THM: Pre Security path ⭐
-- 🔒 THM: Nmap room
-- 🔒 THM: Bash Scripting room
-- 🔒 THM: Burp Suite basics
-- 🔒 THM: OWASP Top 10
-- 🔒 TryHackMe Jr Penetration Tester path ⭐
+- 🔒 How IP geolocation works (look up your own IP) ⭐
+- 🔒 Public vs private IP, NAT and your router ⭐
+- 🔒 How games connect: P2P vs relay vs dedicated servers ⭐
+- 🔒 What Discord and chat apps can and can't reveal
+- 🔒 Watch your own traffic with Wireshark
+- 🔒 OSINT yourself (what your usernames reveal) ⭐
+- 🔒 Lock it down: VPN, privacy settings, router ⭐
 
-**🔍 5. Recon & scanning**
+**🏯 5. Free training grounds**
+
+- 🔒 picoGym: solve 25 beginner challenges ⭐
+- 🔒 OverTheWire Leviathan (Linux tricks)
+- 🔒 OverTheWire Natas 0-10 (web basics) ⭐
+- 🔒 PortSwigger Academy: first 10 labs ⭐
+- 🔒 OWASP Juice Shop: 10 challenges in your lab
+- 🔒 VulnHub: root Basic Pentesting 1 ⭐
+- 🔒 VulnHub: root DC-1
+
+**🔍 6. Recon & scanning**
 
 - ✅ Scan your own machine ⭐
 - ✅ Open vs closed vs filtered ⭐
@@ -164,7 +177,7 @@ flowchart TD
 - ✅ Aggressive scan (-A) and saving results
 - 🔥 All ports, UDP and NSE scripts ⭐
 
-**🌐 6. Web hacking**
+**🌐 7. Web hacking**
 
 - 🔒 How websites work (HTTP, cookies, sessions) ⭐
 - 🔒 Burp Suite - intercept web requests ⭐
@@ -172,19 +185,19 @@ flowchart TD
 - 🔒 SQL injection (by hand, then sqlmap) ⭐
 - 🔒 Cross-site scripting (XSS)
 
-**💥 7. Exploitation**
+**💥 8. Exploitation**
 
 - 🔒 Metasploit basics ⭐
 - 🔒 Linux privilege escalation
 
-**🔑 8. Passwords & hashes**
+**🔑 9. Passwords & hashes**
 
 - 🔒 How password hashes work ⭐
 - 🔒 Crack hashes with John and Hashcat
 
-**🏆 9. Practice & level up**
+**🏆 10. Practice & level up**
 
-- 🔒 Hack The Box Starting Point
+- 🔒 Root 5 VulnHub boxes and write them up ⭐
 - 🔒 Write notes for every box you finish
 
 </details>
@@ -193,7 +206,7 @@ flowchart TD
 ## 🏅 Achievements
 
 <!--ACHIEVEMENTS:START-->
-**6 of 17 unlocked** · +50 XP each
+**6 of 18 unlocked** · +50 XP each
 
 | | Achievement | |
 |---|---|---|
@@ -208,7 +221,8 @@ flowchart TD
 | 🔒 | Lab Rat | _Finished the whole lab phase_ |
 | 🔒 | Terminal Wizard | _Finished Linux & networking basics_ |
 | 🔒 | Scriptsmith | _Finished the Bash scripting path_ |
-| 🔒 | Tower Climber | _Finished the TryHackMe quest line_ |
+| 🔒 | Dungeon Crawler | _Finished the free training grounds_ |
+| 🔒 | Ghost | _Finished the tracking & privacy path_ |
 | 🔒 | On Fire | _Logged 7 days in a row_ |
 | 🔒 | First Blood | _Wrote up a first hacked box_ |
 | 🔒 | Web Slinger | _Finished the web hacking phase_ |
@@ -243,7 +257,7 @@ git clone https://github.com/YeetQz/zero-to-root.git ~/zero-to-root
 cd ~/zero-to-root
 ./hunter                       # 🪪 your status window
 ./hunter quest                 # ⚔️ quests + today's daily quest
-./hunter quiz nmap             # 🧠 take a trial (nmap, linux, networking, bash)
+./hunter quiz nmap             # 🧠 take a trial (nmap, linux, networking, bash, privacy)
 ./hunter done "update kali"    # ✅ mark a skill learned, gain XP, maybe level up
 ./hunter skills                # 🌳 every path and skill
 ./hunter codex port            # 📖 explain a word you don't know
@@ -277,7 +291,9 @@ Kali's default shell is zsh. Remove that line from `~/.zshrc` to turn it off.
 | 🏅 Unlock an achievement | +50 XP |
 
 Every **375 XP** is a level. Ranks: **E** (1) → **D** (5) → **C** (10) → **B** (15) → **A** (20) → **S** (30).
-Your stats grow with the paths that train them: 🗡️ STR exploitation & passwords · 🏃 AGI web · 👁️ SEN recon · ❤️ VIT lab & practice · 🧠 INT Linux & Bash.
+Your stats grow with the paths that train them: 🗡️ STR exploitation & passwords · 🏃 AGI web · 👁️ SEN recon & tracking · ❤️ VIT lab, training grounds & practice · 🧠 INT Linux & Bash.
+
+> 🆓 **Everything in this path is free.** No subscriptions, no trials. See [docs/free-resources.md](docs/free-resources.md).
 
 ## 🗺️ What's in here
 
@@ -285,23 +301,25 @@ Your stats grow with the paths that train them: 🗡️ STR exploitation & passw
 |---|---|
 | ⚙️ [`progress.yml`](progress.yml) | **Your save file.** Skills, quests, XP rules, ranks, achievements |
 | 🐍 [`hunter`](hunter) | The System in your terminal |
-| 🧠 [`quizzes/`](quizzes/) | Trials for each path + 📖 [the Codex](quizzes/codex.yml) (36 words explained) |
+| 🧠 [`quizzes/`](quizzes/) | Trials for each path + 📖 [the Codex](quizzes/codex.yml) (50 words explained) |
 | 📓 [`logs/`](logs/) | Daily hacker diary |
 | 📝 [`writeups/`](writeups/) | One write-up per box I hack |
 | 📚 [`cheatsheets/`](cheatsheets/) | Commands I actually use, in my own words |
 | 🧪 [`lab/`](lab/) | How my home lab is built, and how I fixed it |
+| 🆓 [`docs/free-resources.md`](docs/free-resources.md) | Every free place to learn and practice, checked |
+| 🛰️ [`docs/lessons/network-tracking.md`](docs/lessons/network-tracking.md) | How online tracking really works, and how to protect yourself |
 | 📘 [`docs/how-it-works.md`](docs/how-it-works.md) | How every piece of this repo works, line by line |
 | 🤖 [`scripts/`](scripts/) | The README bot and the System's brain |
 
 ## ⚖️ Rules I hack by
 
 > [!IMPORTANT]
-> Everything in this repo was done **only** on machines I own, my own home lab, or platforms built for practice (TryHackMe, Hack The Box, PortSwigger Academy, OverTheWire, scanme.nmap.org).
+> Everything in this repo was done **only** on machines I own, my own home lab, or platforms built for practice (picoGym, OverTheWire, PortSwigger Academy, VulnHub, OWASP Juice Shop, scanme.nmap.org).
 > Scanning or attacking systems without permission is illegal. Nothing here is meant for that.
 
 - 🚫 No real IP addresses, passwords, VPN files or captured data get committed (see [`.gitignore`](.gitignore))
-- 🚫 No flags or full solutions for active Hack The Box machines
-- ✅ Retired boxes and my own lab are fair game for write-ups
+- 🚫 No flags or full answers for picoGym challenges or OverTheWire levels (that spoils them for everyone)
+- ✅ VulnHub boxes and my own lab are fair game for full write-ups
 
 <div align="center">
 

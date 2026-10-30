@@ -1,0 +1,90 @@
+title: Privacy Trial
+emoji: "🛰️"
+rank: D
+pass: 80
+questions:
+  - q: "Someone gets your IP address from a game. What can they realistically learn from it?"
+    options:
+      - Your exact street address
+      - Your rough area (country, maybe city) and your internet provider
+      - Your password
+      - Your real name
+    answer: b
+    explain: "IP geolocation is usually right about the country, often the region, sometimes the city. It never gives a street or house."
+
+  - q: "Who is the only one who knows which house used a public IP at a certain time?"
+    options: ["Any website you visit", "Your internet provider (ISP)", "Discord", "Other players"]
+    answer: b
+    explain: "Your ISP assigns the address, and normally only shares that link with police under a court order."
+
+  - q: "Why do all the devices in your home share one public IP?"
+    options:
+      - Because of NAT on your router
+      - Because of Wi-Fi encryption
+      - Because of DNS
+      - They don't; each gets its own public IP
+    answer: a
+    explain: "Inside: private addresses (192.168.x.x). The router translates them to one public address on the way out."
+
+  - q: "In which kind of online game can other players see your IP address?"
+    options:
+      - Games using dedicated servers
+      - Games using relay servers
+      - Raw peer-to-peer (P2P) games
+      - Single-player games
+    answer: c
+    explain: "In raw P2P, players connect directly, so they see each other's addresses. Servers and relays hide them."
+
+  - q: "On Discord, what's the most common way someone gets your IP?"
+    options:
+      - Being in a voice call together
+      - You open a link to a website they control
+      - Reading your messages
+      - Seeing your profile picture
+    answer: b
+    explain: "Voice goes through Discord's servers. But any website you open sees your IP. That's all an 'IP logger' is."
+
+  - q: "How does doxxing usually actually happen?"
+    options:
+      - Hacking your router
+      - Piecing together info you shared publicly (usernames, photos, school, posts)
+      - Tracing the IP to your door
+      - Guessing your password
+    answer: b
+    explain: "That's OSINT: open-source intelligence. Reusing one username everywhere makes it much easier."
+
+  - q: "What is EXIF data in a photo?"
+    options:
+      - A photo filter
+      - Hidden info like camera model, date and sometimes GPS location
+      - The file name
+      - A virus
+    answer: b
+    explain: "Check and strip it from your own photos with exiftool before posting."
+
+  - q: "With HTTPS, what can your ISP or Wi-Fi owner still see?"
+    options:
+      - Nothing at all
+      - Your passwords
+      - Which websites you connect to, but not the pages' contents
+      - Every message you type
+    answer: c
+    explain: "DNS lookups and the TLS server name show the site. The contents are encrypted."
+
+  - q: "What does a VPN change?"
+    options:
+      - It makes you completely anonymous
+      - Websites and game peers see the VPN's IP instead of yours, and the VPN company sees your traffic
+      - It speeds up your internet
+      - It removes viruses
+    answer: b
+    explain: "It moves who can see your traffic. Pick a reputable one. Free VPNs often pay for themselves with your data."
+
+  - q: "Someone in a match threatens to dox you. Best first move?"
+    options:
+      - Argue back so they back down
+      - Send them your IP to prove you're not scared
+      - Don't reply, screenshot it, report and block, and tell someone you trust
+      - Try to find their address first
+    answer: c
+    explain: "Don't engage, keep evidence, use the platform's report tools, and get support. Never try to dox them back."

@@ -12,7 +12,7 @@ The SYSTEM, in your terminal. Reads progress.yml and shows your hunter status.
   ./hunter                 status window (default)
   ./hunter skills          every path and skill
   ./hunter quest           your quests + today's daily quest
-  ./hunter quiz [topic]    take a trial (nmap, linux, networking, bash)
+  ./hunter quiz [topic]    take a trial (nmap, linux, networking, bash, privacy)
   ./hunter done "<skill>"  mark a skill done and gain XP
   ./hunter codex [word]    look up a word you don't understand
   ./hunter levelup         replay the level-up animation
@@ -205,6 +205,7 @@ DAILIES = [
     ("Script Forge", ["Write a 5-line bash script", "Make it executable with chmod +x"]),
     ("System Maintenance", ["sudo apt update && sudo apt full-upgrade -y", "Take a VirtualBox snapshot"]),
     ("Dungeon Recon", ["Scan your OWN lab or 127.0.0.1", "Explain every open port you find"]),
+    ("Ghost Check", ["Search one of your own usernames", "Fix one thing it reveals"]),
 ]
 
 
