@@ -8,9 +8,9 @@
 
 <!--BADGES:START-->
 <img src="https://img.shields.io/badge/Kali%20Linux-2026.3-367BF0?style=for-the-badge&logo=kalilinux&logoColor=white" alt="Kali Linux: 2026.3" />
-<img src="https://img.shields.io/badge/Rank-E--Rank%20Novice%20Hunter-1F6BFF?style=for-the-badge" alt="Rank: E-Rank Novice Hunter" />
-<img src="https://img.shields.io/badge/Level-4-6E40C9?style=for-the-badge" alt="Level: 4" />
-<img src="https://img.shields.io/badge/XP-1340-0EA5E9?style=for-the-badge" alt="XP: 1340" />
+<img src="https://img.shields.io/badge/Rank-D--Rank%20Hunter-1F6BFF?style=for-the-badge" alt="Rank: D-Rank Hunter" />
+<img src="https://img.shields.io/badge/Level-5-6E40C9?style=for-the-badge" alt="Level: 5" />
+<img src="https://img.shields.io/badge/XP-1790-0EA5E9?style=for-the-badge" alt="XP: 1790" />
 <img src="https://img.shields.io/badge/Boxes%20pwned-0%20%F0%9F%92%80-CF222E?style=for-the-badge" alt="Boxes pwned: 0 💀" />
 <img src="https://img.shields.io/badge/Streak-2%20days%20%F0%9F%94%A5-FB8500?style=for-the-badge" alt="Streak: 2 days 🔥" />
 <img src="https://img.shields.io/badge/Day-2-475569?style=for-the-badge" alt="Day: 2" />
@@ -25,8 +25,8 @@
 <!--HUNTER:START-->
 <p align="center"><img src="assets/status.svg" alt="Animated hunter status window" width="100%" /></p>
 
-> **[SYSTEM]** mykali is an **E-Rank Novice Hunter**. 160 XP until level 5.  
-> XP sources: Skills 800 · Quests 200 · Logs 40 · Achievements 300 · 6/18 achievements
+> **[SYSTEM]** mykali is a **D-Rank Hunter**. 85 XP until level 6.  
+> XP sources: Skills 950 · Quests 400 · Logs 40 · Achievements 400 · 8/18 achievements
 <!--HUNTER:END-->
 
 ## ⚔️ Quests
@@ -35,23 +35,13 @@
 | | Quest | Rank | Reward | Trial |
 |---|---|---|---|---|
 | ✅ | The Awakening | E | +200 XP |  |
-| ⚔️ | **First Scan** | E | +200 XP | `./hunter quiz nmap` |
+| ✅ | First Scan | E | +200 XP | `./hunter quiz nmap` |
 | ⚔️ | **Shell Initiate** | E | +300 XP | `./hunter quiz linux` |
 | 🔒 | _Packet Whisperer_ | D | +300 XP | `./hunter quiz networking` |
 | 🔒 | _Scriptsmith_ | D | +300 XP | `./hunter quiz bash` |
 | 🔒 | _Dungeon Gate: Home Lab_ | D | +400 XP |  |
 | 🔒 | _Enter the Dungeon_ | D | +300 XP |  |
 | 🔒 | _Ghost Protocol_ | D | +400 XP | `./hunter quiz privacy` |
-
-<details>
-<summary>⚔️ <b>First Scan</b> objectives</summary>
-
-- [ ] Scan your own machine with nmap
-- [ ] Watch port 22 flip from closed to open
-- [ ] Run -A against scanme.nmap.org and save the result
-- [ ] Pass the nmap quiz (80%+)
-
-</details>
 
 <details>
 <summary>⚔️ <b>Shell Initiate</b> objectives</summary>
@@ -67,14 +57,14 @@
 
 <!--PROGRESS:START-->
 ```text
-Overall      ████░░░░░░░░░░░░░░░░░░░░░░░░░░   13%  (6/46 skills)
-Must-knows ⭐ ████░░░░░░░░░░░░░░░░░░░░░░░░░░   13%  (4/30)
-In progress  🔥 4 skills
+Overall      █████░░░░░░░░░░░░░░░░░░░░░░░░░   15%  (7/46 skills)
+Must-knows ⭐ █████░░░░░░░░░░░░░░░░░░░░░░░░░   17%  (5/30)
+In progress  🔥 3 skills
 ```
 
 | | Path | Progress | | Status |
 |---|---|---|---|---|
-| 🧪 | **1. Set up your lab** | `█████░░░░░` | 2/4 | 🔥 In progress |
+| 🧪 | **1. Set up your lab** | `████████░░` | 3/4 | 🔥 In progress |
 | 🐧 | **2. Linux & networking basics** | `░░░░░░░░░░` | 0/6 | 🔥 In progress |
 | 🐚 | **3. Bash scripting** | `░░░░░░░░░░` | 0/6 | 🔒 Locked |
 | 🛰️ | **4. Network tracking & privacy** | `░░░░░░░░░░` | 0/7 | 🔒 Locked |
@@ -91,7 +81,7 @@ In progress  🔥 4 skills
 <!--ROADMAP:START-->
 ```mermaid
 flowchart TD
-    lab["🧪 Set up your lab<br/>2/4"]:::active
+    lab["🧪 Set up your lab<br/>3/4"]:::active
     linux["🐧 Linux & networking basics<br/>0/6"]:::active
     bash["🐚 Bash scripting<br/>0/6"]:::locked
     track["🛰️ Network tracking & privacy<br/>0/7"]:::locked
@@ -128,7 +118,7 @@ flowchart TD
 
 - ✅ Install Kali in VirtualBox ⭐
 - ✅ Fix the Hyper-V / VBS conflict
-- 🔥 Update Kali and check the internet ⭐
+- ✅ Update Kali and check the internet ⭐
 - 🔥 Build a home lab (Metasploitable 2 + DVWA) ⭐
 
 **🐧 2. Linux & networking basics**
@@ -206,7 +196,7 @@ flowchart TD
 ## 🏅 Achievements
 
 <!--ACHIEVEMENTS:START-->
-**6 of 18 unlocked** · +50 XP each
+**8 of 18 unlocked** · +50 XP each
 
 | | Achievement | |
 |---|---|---|
@@ -216,8 +206,8 @@ flowchart TD
 | 🚪 | **Open Port Hunter** | Watched a port flip from closed to open |
 | 🕵️ | **Version Detective** | Identified exact software with -sV |
 | 📓 | **Dear Diary** | Wrote a first hacker log |
-| 🔒 | Rank Up | _Reached D-rank (level 5)_ |
-| 🔒 | Quiz Slayer | _Cleared a quest by passing its quiz_ |
+| ⬆️ | **Rank Up** | Reached D-rank (level 5) |
+| 🧠 | **Quiz Slayer** | Cleared a quest by passing its quiz |
 | 🔒 | Lab Rat | _Finished the whole lab phase_ |
 | 🔒 | Terminal Wizard | _Finished Linux & networking basics_ |
 | 🔒 | Scriptsmith | _Finished the Bash scripting path_ |
