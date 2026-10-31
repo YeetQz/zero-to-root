@@ -52,7 +52,7 @@ phases:
       - name: Fix the Hyper-V / VBS conflict
         status: done
       - name: Update Kali and check the internet
-        status: next
+        status: done
         core: true
       - name: Build a home lab (Metasploitable 2 + DVWA)
         status: next
@@ -231,7 +231,7 @@ quests:
     title: First Scan
     rank: E
     reward: 200
-    status: active
+    status: done
     quiz: nmap
     objectives:
       - Scan your own machine with nmap
