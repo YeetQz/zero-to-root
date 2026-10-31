@@ -13,7 +13,7 @@
 <img src="https://img.shields.io/badge/XP-1320-0EA5E9?style=for-the-badge" alt="XP: 1320" />
 <img src="https://img.shields.io/badge/Boxes%20pwned-0%20%F0%9F%92%80-CF222E?style=for-the-badge" alt="Boxes pwned: 0 💀" />
 <img src="https://img.shields.io/badge/Streak-1%20day%20%F0%9F%94%A5-FB8500?style=for-the-badge" alt="Streak: 1 day 🔥" />
-<img src="https://img.shields.io/badge/Day-1-475569?style=for-the-badge" alt="Day: 1" />
+<img src="https://img.shields.io/badge/Day-2-475569?style=for-the-badge" alt="Day: 2" />
 <!--BADGES:END-->
 
 </div>
