@@ -24,14 +24,26 @@
 > Metasploitable is deliberately vulnerable. Never put it on NAT or Bridged networking, and never expose it to the internet.
 
 ## 🔌 Host-only network setup
-1. VirtualBox → **File → Tools → Network Manager → Host-only Networks → Create** (usually `192.168.56.0/24`)
+1. VirtualBox → **File → Tools → Network Manager → Host-only Networks → Create** (mine got `192.168.17.0/24`; VirtualBox picks the subnet)
 2. Kali → Settings → Network → **Adapter 2**: Host-only Adapter
 3. Metasploitable → Settings → Network → **Adapter 1**: Host-only Adapter
 4. Boot both, then from Kali:
    ```bash
-   ip a                        # find Kali's 192.168.56.x address
-   nmap -sn 192.168.56.0/24    # find Metasploitable
+   ip a                        # find Kali's 192.168.17.x address
+   nmap -sn 192.168.17.0/24    # find Metasploitable
    ```
+
+### 🐛 Fix I needed: one network profile for two cards
+Kali had a single profile ("Wired connection 1") that jumped to whichever card connected last, so connecting `eth1` (lab) killed `eth0` (internet) and the other way round. The fix gives each card its own profile:
+
+```bash
+nmcli con add type ethernet ifname eth1 con-name lab autoconnect yes
+nmcli con mod "Wired connection 1" connection.interface-name eth0
+nmcli con up lab
+ip -br a          # eth0 = 10.0.2.15 (internet) · eth1 = 192.168.17.3 (lab)
+```
+
+Also: `dhclient` doesn't exist on new Kali. Use `nmcli` instead.
 
 ## 📸 Snapshots
 Take a snapshot of every VM right after it's set up (**Machine → Take Snapshot**). If anything breaks, roll back in seconds.
