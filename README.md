@@ -10,9 +10,9 @@
 <img src="https://img.shields.io/badge/Kali%20Linux-2026.3-367BF0?style=for-the-badge&logo=kalilinux&logoColor=white" alt="Kali Linux: 2026.3" />
 <img src="https://img.shields.io/badge/Rank-E--Rank%20Novice%20Hunter-1F6BFF?style=for-the-badge" alt="Rank: E-Rank Novice Hunter" />
 <img src="https://img.shields.io/badge/Level-4-6E40C9?style=for-the-badge" alt="Level: 4" />
-<img src="https://img.shields.io/badge/XP-1320-0EA5E9?style=for-the-badge" alt="XP: 1320" />
+<img src="https://img.shields.io/badge/XP-1340-0EA5E9?style=for-the-badge" alt="XP: 1340" />
 <img src="https://img.shields.io/badge/Boxes%20pwned-0%20%F0%9F%92%80-CF222E?style=for-the-badge" alt="Boxes pwned: 0 💀" />
-<img src="https://img.shields.io/badge/Streak-1%20day%20%F0%9F%94%A5-FB8500?style=for-the-badge" alt="Streak: 1 day 🔥" />
+<img src="https://img.shields.io/badge/Streak-2%20days%20%F0%9F%94%A5-FB8500?style=for-the-badge" alt="Streak: 2 days 🔥" />
 <img src="https://img.shields.io/badge/Day-2-475569?style=for-the-badge" alt="Day: 2" />
 <!--BADGES:END-->
 
@@ -25,8 +25,8 @@
 <!--HUNTER:START-->
 <p align="center"><img src="assets/status.svg" alt="Animated hunter status window" width="100%" /></p>
 
-> **[SYSTEM]** mykali is an **E-Rank Novice Hunter**. 180 XP until level 5.  
-> XP sources: Skills 800 · Quests 200 · Logs 20 · Achievements 300 · 6/18 achievements
+> **[SYSTEM]** mykali is an **E-Rank Novice Hunter**. 160 XP until level 5.  
+> XP sources: Skills 800 · Quests 200 · Logs 40 · Achievements 300 · 6/18 achievements
 <!--HUNTER:END-->
 
 ## ⚔️ Quests
@@ -233,17 +233,13 @@ flowchart TD
 ## 📓 Latest log
 
 <!--LATEST_LOG:START-->
-### [📓 2026-10-30 · Day 1: Kali is alive 🐉](logs/2026-10-30.md)
+### [📓 YYYY-MM-DD · Day N: short title](logs/2026-10-31.md)
 
 **🧠 What I learned:**
 
-- **nmap 127.0.0.1** → all 1000 ports closed. A fresh Kali runs nothing, which is good.
-- Started SSH → port 22 flipped to **open**. Stopped it again after.
-- **`-sV`** found the exact version: `OpenSSH 10.4p1 Debian 5`. Versions are what you look up for vulnerabilities.
-- **`-A` on scanme.nmap.org** found Apache 2.4.7 and nmap scripts (lines starting with `|_`).
-- 🤯 The OS guess said *"VirtualBox Slirp NAT"*, one hop, 0.35 ms. That was VirtualBox's NAT relay, not the real server. **nmap output can lie, so sanity-check it.**
+-
 
-<sub>📚 1 log entry so far · [read them all](logs/)</sub>
+<sub>📚 2 log entries so far · [read them all](logs/)</sub>
 <!--LATEST_LOG:END-->
 
 ---
