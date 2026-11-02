@@ -12,8 +12,8 @@
 <img src="https://img.shields.io/badge/Level-5-6E40C9?style=for-the-badge" alt="Level: 5" />
 <img src="https://img.shields.io/badge/XP-1790-0EA5E9?style=for-the-badge" alt="XP: 1790" />
 <img src="https://img.shields.io/badge/Boxes%20pwned-0%20%F0%9F%92%80-CF222E?style=for-the-badge" alt="Boxes pwned: 0 💀" />
-<img src="https://img.shields.io/badge/Streak-2%20days%20%F0%9F%94%A5-FB8500?style=for-the-badge" alt="Streak: 2 days 🔥" />
-<img src="https://img.shields.io/badge/Day-3-475569?style=for-the-badge" alt="Day: 3" />
+<img src="https://img.shields.io/badge/Streak-0%20days%20%F0%9F%94%A5-FB8500?style=for-the-badge" alt="Streak: 0 days 🔥" />
+<img src="https://img.shields.io/badge/Day-4-475569?style=for-the-badge" alt="Day: 4" />
 <!--BADGES:END-->
 
 </div>
